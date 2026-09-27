@@ -904,11 +904,9 @@ details[open] > summary svg {
 }
 /* Clear, readable supporting content without hidden panels. */
 .homelab-overview {
-  margin-top: 48px;
-  padding: 32px;
-  background: #101722;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
 }
 .homelab-intro {
   max-width: 780px;
@@ -924,10 +922,47 @@ details[open] > summary svg {
 .homelab-activities {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
-  margin: 28px 0;
-  border-top: 1px solid var(--line);
-  padding-top: 26px;
+  gap: 40px;
+  margin: 34px 0 28px;
+  padding: 0;
+  list-style: none;
+}
+.homelab-step {
+  position: relative;
+  min-width: 0;
+}
+.homelab-step:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  top: 23px;
+  left: 78px;
+  right: -18px;
+  height: 1px;
+  background: var(--line);
+  color: var(--accent);
+  font-size: 18px;
+  line-height: 0;
+  text-align: right;
+}
+.homelab-node {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #425674;
+  border-radius: 50%;
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  margin-bottom: 22px;
+}
+.homelab-node > span {
+  position: absolute;
+  right: -12px;
+  bottom: -4px;
+  padding: 0 4px;
+  background: var(--bg);
+  font-size: 0.75rem;
+  line-height: 1.5;
 }
 .homelab-activities h4 {
   font-size: 1.05rem;
@@ -1014,8 +1049,8 @@ details[open] > summary svg {
 }
 @media (max-width: 760px) {
   .homelab-overview {
-    padding: 24px 20px;
-    margin-top: 32px;
+    padding-top: 30px;
+    margin-top: 40px;
   }
   .homelab-activities,
   .skills-grid,
@@ -1023,7 +1058,24 @@ details[open] > summary svg {
     grid-template-columns: 1fr;
   }
   .homelab-activities {
-    gap: 24px;
+    gap: 30px;
+  }
+  .homelab-step {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 22px;
+  }
+  .homelab-node {
+    margin: 0;
+  }
+  .homelab-step:not(:last-child)::after {
+    content: "";
+    top: 65px;
+    bottom: -13px;
+    left: 23px;
+    right: auto;
+    width: 1px;
+    height: auto;
   }
   .writing-platform {
     padding: 24px 20px;

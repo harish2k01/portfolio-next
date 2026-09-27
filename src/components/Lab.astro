@@ -2,14 +2,17 @@
 import Icon from "./Icon.astro";
 const activities = [
   {
+    icon: "server" as const,
     title: "Run applications",
     text: "I use Proxmox, Talos Linux, and Kubernetes to run self-hosted services, with Longhorn for persistent storage.",
   },
   {
+    icon: "deploy" as const,
     title: "Automate deployments",
     text: "GitHub Actions builds container images. Helm packages applications, and Argo CD keeps the cluster in sync with Git.",
   },
   {
+    icon: "activity" as const,
     title: "Monitor & troubleshoot",
     text: "Prometheus and Grafana show metrics and dashboards. Loki and Alloy collect logs to help investigate problems.",
   },
@@ -18,24 +21,28 @@ const activities = [
 
 <aside class="homelab-overview" aria-labelledby="homelab-heading">
   <div class="homelab-intro">
-    <h3 id="homelab-heading">My homelab: a place to learn by doing</h3>
+    <h3 id="homelab-heading">My homelab, in practice</h3>
     <p>
-      A homelab is a personal server environment. Mine lets me run applications,
-      try infrastructure tools, and practise operating systems outside work.
+      My homelab is a personal server environment where I put ideas into
+      practice. Here’s what I do with it.
     </p>
   </div>
-  <div class="homelab-activities">
+  <ol class="homelab-activities">
     {
-      activities.map((activity) => (
-        <div>
-          <>
+      activities.map((activity, index) => (
+        <li class="homelab-step">
+          <div class="homelab-node" aria-hidden="true">
+            <Icon name={activity.icon} size={25} />
+            <span class="mono">0{index + 1}</span>
+          </div>
+          <div class="homelab-step-copy">
             <h4>{activity.title}</h4>
             <p>{activity.text}</p>
-          </>
-        </div>
+          </div>
+        </li>
       ))
     }
-  </div>
+  </ol>
   <a class="quiet-link" href="/projects/homelab-ops/"
     >Explore my Kubernetes setup <Icon name="arrow" size={18} /></a
   >
