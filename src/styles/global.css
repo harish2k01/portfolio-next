@@ -312,6 +312,11 @@ input:focus-visible {
   border-color: #3e526e75;
   transform: rotate(-20deg);
 }
+.orbit-motion {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+}
 .orbit-track {
   position: absolute;
   inset: 4%;
