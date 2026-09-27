@@ -1,0 +1,275 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Icon from "../components/Icon.astro";
+import Portrait from "../components/Portrait.astro";
+import ProjectDiagram from "../components/ProjectDiagram.astro";
+import Contact from "../components/Contact.astro";
+import Lab from "../components/Lab.astro";
+import { profile, experience, education, skills } from "../data/profile";
+import { projects } from "../data/projects";
+import { articles } from "../data/writing";
+---
+
+<Layout>
+  <section class="hero container" aria-labelledby="hero-heading">
+    <div class="hero-copy">
+      <p class="eyebrow">
+        <span class="eyebrow-line" aria-hidden="true"></span> SITE RELIABILITY ·
+        DEVOPS · CURIOSITY
+      </p><h1 id="hero-heading">
+        Harish<br />Thangadurai<span class="name-period">.</span>
+      </h1><p class="hero-role">I make systems <span>make sense.</span></p><p
+        class="hero-description"
+      >
+        Site Reliability Engineer at <a href="https://nielseniq.com/"
+          >NielsenIQ</a
+        >.<br />Building reliable infrastructure, automating the repetitive, and
+        understanding what happens underneath.
+      </p><div class="hero-actions">
+        <a class="button button-primary" href="#work"
+          >Explore my work <Icon name="arrow" size={18} /></a
+        ><a class="quiet-link" href={profile.github}
+          ><Icon name="github" size={18} /> GitHub</a
+        ><a class="quiet-link" href={profile.linkedin}
+          ><Icon name="linkedin" size={18} /> LinkedIn</a>
+      </div>
+    </div>
+    <Portrait />
+    <div class="hero-bottom">
+      <span class="mono">Infrastructure. Intention. Iteration.</span><a
+        href="#work"
+        class="scroll-cue"
+        >A little further down <span aria-hidden="true">↓</span></a>
+    </div>
+  </section>
+  <section id="work" class="container section" aria-labelledby="work-heading">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="eyebrow">01 / SELECTED WORK</p><h2 id="work-heading">
+          Less manual.<br /><span class="muted">More intentional.</span>
+        </h2>
+      </div><p class="section-lead">
+        A few things I build and operate outside my day job. Real
+        infrastructure, open repositories, and plenty of lessons along the way.
+      </p>
+    </div>
+    <div class="project-list">
+      {
+        projects.slice(0, 3).map((project, i) => (
+          <article class="project-row">
+            <>
+              <a
+                class="project-visual-link"
+                href={`/projects/${project.slug}/`}
+                aria-label={`Explore ${project.name}`}
+              >
+                <ProjectDiagram type={project.slug} />
+              </a>
+              <div class="project-copy">
+                <>
+                  <span class="project-number mono">
+                    0{i + 1} <span>/ {project.category}</span>
+                  </span>
+                  <h3>
+                    <a href={`/projects/${project.slug}/`}>
+                      {project.headline}
+                      <Icon name="arrow" size={24} />
+                    </a>
+                  </h3>
+                  <p>{project.description}</p>
+                  <ul class="tag-list">
+                    {project.tags.map((tag) => (
+                      <li>{tag}</li>
+                    ))}
+                  </ul>
+                  <div class="project-actions">
+                    <>
+                      <a href={`/projects/${project.slug}/`}>
+                        Inside the project <span aria-hidden="true">→</span>
+                      </a>
+                      <a class="repo-link" href={project.repo}>
+                        <Icon name="github" size={16} /> Source
+                      </a>
+                    </>
+                  </div>
+                </>
+              </div>
+            </>
+          </article>
+        ))
+      }
+    </div>
+    <a class="project-extra" href="/projects/grafana-dashboards/"
+      ><span class="extra-icon" aria-hidden="true">▥</span><div>
+        <span class="mono">ALSO IN THE TOOLBOX</span><h3>
+          Grafana dashboards, maintained as code.
+        </h3>
+      </div><Icon name="arrow" size={24} /></a
+    >
+    <a class="archive-link" href="/projects/"
+      >The full project archive <span class="mono">11 PROJECTS</span><Icon
+        name="arrow"
+        size={20}
+      /></a
+    >
+  </section>
+  <section
+    id="journey"
+    class="container section journey-section"
+    aria-labelledby="journey-heading"
+  >
+    <div class="section-heading">
+      <p class="eyebrow">02 / THE JOURNEY</p><h2 id="journey-heading">
+        Different roles.<br /><span class="muted">The same curiosity.</span>
+      </h2><p class="section-lead">
+        From software and quality engineering to site reliability. Each step
+        adds another way to understand a system.
+      </p><a class="quiet-link" href={profile.linkedin}
+        >View LinkedIn <Icon name="arrow" size={16} /></a>
+    </div>
+    <div class="timeline">
+      {
+        experience.map((item) => (
+          <article
+            class:list={["timeline-item", { "is-current": item.current }]}
+          >
+            <>
+              <div class="timeline-meta">
+                <span class="mono">{item.date}</span>
+                {item.current && (
+                  <span class="current-badge">Current role</span>
+                )}
+              </div>
+              <h3>
+                <a href={item.url}>
+                  {item.company}
+                  <Icon name="arrow" size={16} />
+                </a>
+              </h3>
+              <p class="timeline-role">{item.role}</p>
+              <p class="timeline-detail">{item.detail}</p>
+            </>
+          </article>
+        ))
+      }
+      <details class="education">
+        <summary
+          >Before that: education <Icon name="chevron" size={18} /></summary
+        ><div>
+          {
+            education.map((item) => (
+              <article>
+                <>
+                  <span class="mono muted">{item.date}</span>
+                  <h4>{item.title}</h4>
+                  <a href={item.url}>
+                    {item.place} <span aria-hidden="true">↗</span>
+                  </a>
+                </>
+              </article>
+            ))
+          }
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="about" class="container section" aria-labelledby="about-heading">
+    <div class="about-layout">
+      <div class="section-heading">
+        <p class="eyebrow">03 / BEYOND THE JOB TITLE</p><h2 id="about-heading">
+          A home server.<br /><span class="muted">An endless rabbit hole.</span>
+        </h2>
+      </div><div class="about-copy">
+        <p>
+          I'm an engineer who likes understanding how things work, especially
+          when they don't. My interests sit at the intersection of
+          infrastructure, automation, observability, and performance.
+        </p><p>
+          Outside work, I run self-hosted services and Kubernetes clusters in my
+          homelab. It's a place to experiment with deployments, stateful
+          workloads, networking, and recovery—and to learn from the parts that
+          don't go to plan.
+        </p><p>
+          I write down what I learn on <a href={profile.blog}
+            >Harish's Tech Bytes</a
+          >, so the next person has a little less figuring out to do.
+        </p><blockquote>
+          “If it works manually, automate it.<br />If it breaks, understand it.”
+        </blockquote>
+      </div>
+    </div>
+    <Lab />
+  </section>
+  <section
+    id="toolkit"
+    class="container section toolkit-section"
+    aria-labelledby="toolkit-heading"
+  >
+    <div>
+      <p class="eyebrow">04 / THE TOOLKIT</p><h2 id="toolkit-heading">
+        Tools with<br /><span class="muted">a purpose.</span>
+      </h2>
+    </div><div class="skill-groups">
+      {
+        skills.slice(0, 3).map((group, i) => (
+          <div class="skill-group">
+            <>
+              <span class="mono skill-index">0{i + 1}</span>
+              <div>
+                <>
+                  <h3>{group.title}</h3>
+                  <p>{group.items.join(" · ")}</p>
+                </>
+              </div>
+            </>
+          </div>
+        ))
+      }<details class="foundations">
+        <summary
+          >Development foundations <Icon name="chevron" size={16} /></summary
+        ><p>{skills[3].items.join(" · ")}</p>
+      </details>
+    </div>
+  </section>
+  <section
+    id="writing"
+    class="container section"
+    aria-labelledby="writing-heading"
+  >
+    <div class="section-heading split-heading">
+      <div>
+        <p class="eyebrow">05 / FIELD NOTES</p><h2 id="writing-heading">
+          Learn it. Break it.<br /><span class="muted">Write it down.</span>
+        </h2>
+      </div><div>
+        <p class="section-lead">Practical guides and lessons from the lab.</p><a
+          class="quiet-link"
+          href={profile.blog}
+          >All articles on Tech Bytes <Icon name="arrow" size={16} /></a>
+      </div>
+    </div><div class="article-list">
+      {
+        articles.map((article, i) => (
+          <a class="article-row" href={article.url}>
+            <>
+              <span class="article-index mono">0{i + 1}</span>
+              <div>
+                <>
+                  <span class="mono article-topic">{article.topic}</span>
+                  <h3>{article.title}</h3>
+                </>
+              </div>
+              <time datetime={article.datetime}>{article.date}</time>
+              <Icon name="arrow" size={24} />
+            </>
+          </a>
+        ))
+      }
+    </div><a class="medium-link quiet-link" href={profile.medium}
+      >You can also find my writing on Medium <Icon
+        name="arrow"
+        size={16}
+      /></a>
+  </section>
+  <Contact />
+</Layout>

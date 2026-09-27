@@ -1,0 +1,13 @@
+services:
+  portfolio:
+    build:
+      context: .
+      args:
+        SITE_URL: ${SITE_URL:-https://harish2k01.xyz}
+    ports:
+      - "127.0.0.1:${PORT:-8080}:8080"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

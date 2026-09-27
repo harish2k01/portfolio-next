@@ -1,0 +1,42 @@
+name: Validate portfolio
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - run: npm run validate
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-static
+          path: dist/
+      - name: Build container
+        run: docker build -t portfolio:test .
+      - name: Verify production routing
+        run: |
+          docker run -d --name portfolio-test -p 8080:8080 portfolio:test
+          for attempt in $(seq 1 20); do
+            if curl -fsS http://localhost:8080/healthz; then break; fi
+            sleep 1
+          done
+          curl -fsS http://localhost:8080/ > /tmp/home.html
+          grep -q 'Harish' /tmp/home.html
+          curl -fsS http://localhost:8080/projects/homelab-ops/ > /dev/null
+          test "$(curl -s -o /tmp/missing.html -w '%{http_code}' http://localhost:8080/not-a-real-page/)" = "404"
+          grep -q 'wrong turn' /tmp/missing.html
+      - name: Stop test container
+        if: always()
+        run: docker rm -f portfolio-test || true

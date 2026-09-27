@@ -1,0 +1,72 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Icon from "../../components/Icon.astro";
+import { projects, otherProjects } from "../../data/projects";
+const groups = [
+  {
+    name: "Infrastructure & operations",
+    items: projects.map((p) => ({ ...p, detail: `/projects/${p.slug}/` })),
+  },
+  {
+    name: "Self-hosted applications",
+    items: otherProjects
+      .filter((p) => p.category === "Self-hosted applications")
+      .map((p) => ({ ...p, detail: null })),
+  },
+  {
+    name: "Earlier explorations",
+    items: otherProjects
+      .filter((p) => p.category === "Earlier work")
+      .map((p) => ({ ...p, detail: null })),
+  },
+];
+---
+
+<Layout
+  title="Project archive — Harish Thangadurai"
+  description="Infrastructure, GitOps, observability, self-hosted applications, and earlier projects by Harish Thangadurai."
+>
+  <div class="container archive-page">
+    <a class="quiet-link" href="/#work">← Back to selected work</a><header
+      class="page-heading"
+    >
+      <p class="eyebrow">THE PROJECT ARCHIVE</p><h1>
+        A record of<br /><span class="muted">figuring things out.</span>
+      </h1><p>
+        Infrastructure, useful tools, and the projects that came before them.
+      </p>
+    </header>
+    {
+      groups.map((group) => (
+        <section class="archive-group" aria-label={group.name}>
+          <h2>{group.name}</h2>
+          {group.items.map((project) => (
+            <article class="archive-row">
+              <div>
+                <h3>
+                  <a href={project.detail || project.repo}>
+                    {project.name} <Icon name="arrow" size={20} />
+                  </a>
+                </h3>
+                <p>{project.description}</p>
+                <ul class="tag-list">
+                  {project.tags.map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+              </div>
+              <a
+                class="archive-repo"
+                href={project.repo}
+                aria-label={`${project.name} source on GitHub`}
+              >
+                <Icon name="github" size={20} />
+                <span>Source</span>
+              </a>
+            </article>
+          ))}
+        </section>
+      ))
+    }
+  </div>
+</Layout>

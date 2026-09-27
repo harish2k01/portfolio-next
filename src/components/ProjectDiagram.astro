@@ -1,0 +1,204 @@
+---
+interface Props {
+  type: string;
+}
+const { type } = Astro.props;
+---
+
+<div class:list={["project-diagram", `diagram-${type}`]} aria-hidden="true">
+  {
+    type === "homelab-ops" && (
+      <>
+        <>
+          <div class="diagram-topline">
+            <>
+              <span>desired state</span>
+              <span>→ actual state</span>
+            </>
+          </div>
+          <div class="flow-nodes">
+            <>
+              <div class="flow-node">
+                <>
+                  <span class="node-glyph">⑂</span>
+                  <b>Git</b>
+                  <small>source of truth</small>
+                </>
+              </div>
+              <span class="connector">→</span>
+              <div class="flow-node flow-node-accent">
+                <>
+                  <span class="node-glyph">⟳</span>
+                  <b>Argo CD</b>
+                  <small>reconcile</small>
+                </>
+              </div>
+              <span class="connector">→</span>
+              <div class="flow-node">
+                <>
+                  <span class="node-glyph">⎈</span>
+                  <b>Kubernetes</b>
+                  <small>run</small>
+                </>
+              </div>
+            </>
+          </div>
+          <div class="diagram-bottomline">
+            <>
+              <span>commit</span>
+              <span class="diagram-line" />
+              <span>sync</span>
+              <span class="diagram-line" />
+              <span>observe</span>
+            </>
+          </div>
+        </>
+      </>
+    )
+  }
+  {
+    type === "helm-charts" && (
+      <>
+        <>
+          <div class="diagram-topline">
+            <>
+              <span>one chart</span>
+              <span>two distribution paths</span>
+            </>
+          </div>
+          <div class="chart-flow">
+            <>
+              <div class="chart-source">
+                <>
+                  <span class="node-glyph">⎈</span>
+                  <span>
+                    Chart.yaml
+                    <>
+                      <br />
+                      <small>values.yaml</small>
+                    </>
+                  </span>
+                </>
+              </div>
+              <div class="chart-branches">
+                <>
+                  <div>
+                    <>
+                      <span>↗</span>
+                      <b>Helm repository</b>
+                      <small>GitHub Pages</small>
+                    </>
+                  </div>
+                  <div>
+                    <>
+                      <span>↘</span>
+                      <b>OCI registry</b>
+                      <small>GHCR</small>
+                    </>
+                  </div>
+                </>
+              </div>
+            </>
+          </div>
+          <div class="diagram-bottomline">
+            <>
+              <span>versioned</span>
+              <span class="diagram-line" />
+              <span>signed</span>
+              <span class="diagram-line" />
+              <span>portable</span>
+            </>
+          </div>
+        </>
+      </>
+    )
+  }
+  {
+    type === "k8s-debug-pod" && (
+      <>
+        <>
+          <div class="diagram-topline">
+            <>
+              <span>inside the cluster</span>
+              <span>~/debug</span>
+            </>
+          </div>
+          <div class="debug-code">
+            <>
+              <p>
+                <span>$</span> kubectl exec -it debug-pod -- bash
+              </p>
+              <p class="code-comment"># a toolbox for the next question</p>
+              <p>
+                dig <span class="code-muted">·</span> curl{" "}
+                <span class="code-muted">·</span> tcpdump{" "}
+                <span class="code-muted">·</span> strace
+              </p>
+              <p>
+                kubectl <span class="code-muted">·</span> jq{" "}
+                <span class="code-muted">·</span> psql{" "}
+                <span class="code-muted">·</span> redis-cli
+              </p>
+              <span class="terminal-cursor">_</span>
+            </>
+          </div>
+          <div class="diagram-bottomline">
+            <>
+              <span>linux/amd64</span>
+              <span class="diagram-line" />
+              <span>linux/arm64</span>
+            </>
+          </div>
+        </>
+      </>
+    )
+  }
+  {
+    type === "grafana-dashboards" && (
+      <>
+        <>
+          <div class="diagram-topline">
+            <>
+              <span>observability as code</span>
+              <span>versioned / reviewed</span>
+            </>
+          </div>
+          <div class="flow-nodes">
+            <>
+              <div class="flow-node">
+                <>
+                  <span class="node-glyph">{}</span>
+                  <b>JSON</b>
+                  <small>dashboards</small>
+                </>
+              </div>
+              <span class="connector">→</span>
+              <div class="flow-node flow-node-accent">
+                <>
+                  <span class="node-glyph">⑂</span>
+                  <b>Git</b>
+                  <small>review</small>
+                </>
+              </div>
+              <span class="connector">→</span>
+              <div class="flow-node">
+                <>
+                  <span class="node-glyph">▥</span>
+                  <b>Grafana</b>
+                  <small>visibility</small>
+                </>
+              </div>
+            </>
+          </div>
+          <div class="diagram-bottomline">
+            <>
+              <span>applications</span>
+              <span class="diagram-line" />
+              <span>servers</span>
+            </>
+          </div>
+        </>
+      </>
+    )
+  }
+</div>

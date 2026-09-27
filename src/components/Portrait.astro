@@ -1,0 +1,33 @@
+---
+import { Image } from "astro:assets";
+import photo from "../assets/harish.jpg";
+---
+
+<div class="portrait-system">
+  <div class="orbit orbit-outer" aria-hidden="true"></div>
+  <div class="orbit orbit-inner" aria-hidden="true"></div>
+  <div class="orbit-track" aria-hidden="true"><span></span></div>
+  <div class="portrait-frame">
+    <Image
+      src={photo}
+      alt="Harish Thangadurai smiling"
+      width={360}
+      height={360}
+      widths={[240, 360, 460]}
+      sizes="(max-width: 600px) 240px, 360px"
+      format="webp"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="orbit-label orbit-label-top">
+    <span aria-hidden="true">⌘</span> build
+  </div>
+  <div class="orbit-label orbit-label-right">
+    <span aria-hidden="true">↗</span> ship
+  </div>
+  <div class="orbit-label orbit-label-bottom">
+    <span aria-hidden="true">◎</span> observe
+  </div>
+  <div class="portrait-caption mono">a human behind the systems</div>
+</div>

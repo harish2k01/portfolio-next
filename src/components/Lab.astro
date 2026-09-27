@@ -1,0 +1,132 @@
+---
+const layers = [
+  {
+    id: "foundation",
+    label: "Foundation",
+    index: "01",
+    headline: "Start with the infrastructure.",
+    text: "Proxmox and Talos Linux form part of my homelab toolkit. Kubernetes runs the workloads, while Longhorn provides distributed storage.",
+    tools: ["Proxmox", "Talos Linux", "Kubernetes", "Longhorn"],
+    code: [
+      "infrastructure",
+      "└── cluster",
+      "    ├── compute",
+      "    ├── networking",
+      "    └── persistent storage",
+    ],
+  },
+  {
+    id: "delivery",
+    label: "Delivery",
+    index: "02",
+    headline: "Give every change a path.",
+    text: "GitHub Actions builds and publishes container images. Helm packages the applications, and Argo CD reconciles the desired state from Git.",
+    tools: ["GitHub Actions", "GHCR", "Helm", "Argo CD"],
+    code: [
+      "git commit",
+      "└── build & publish",
+      "    └── update desired state",
+      "        └── reconcile",
+      "            └── deployment",
+    ],
+  },
+  {
+    id: "visibility",
+    label: "Visibility",
+    index: "03",
+    headline: "Understand what is happening.",
+    text: "Prometheus and Grafana help me explore metrics and dashboards. Loki and Alloy extend that view to logs, so I can investigate the behavior behind the symptoms.",
+    tools: ["Prometheus", "Grafana", "Loki", "Alloy"],
+    code: [
+      "running workloads",
+      "├── metrics → Prometheus",
+      "├── logs → Loki",
+      "└── dashboards → Grafana",
+    ],
+  },
+];
+---
+
+<div class="lab-explorer">
+  <div class="lab-header">
+    <span class="mono">HOMELAB / UNDER THE HOOD</span><span class="lab-note"
+      >An evolving learning environment</span>
+  </div>
+  <div class="lab-tabs" role="tablist" aria-label="Homelab layers">
+    {
+      layers.map((layer, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`tab-${layer.id}`}
+          aria-selected={i === 0 ? "true" : "false"}
+          aria-controls={`panel-${layer.id}`}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          <span>{layer.index}</span>
+          {layer.label}
+        </button>
+      ))
+    }
+  </div>
+  {
+    layers.map((layer, i) => (
+      <div
+        role="tabpanel"
+        id={`panel-${layer.id}`}
+        aria-labelledby={`tab-${layer.id}`}
+        class="lab-panel"
+        tabindex="0"
+        hidden={i !== 0}
+      >
+        <>
+          <div>
+            <>
+              <h3>{layer.headline}</h3>
+              <p>{layer.text}</p>
+              <ul class="tag-list">
+                {layer.tools.map((tool) => (
+                  <li>{tool}</li>
+                ))}
+              </ul>
+            </>
+          </div>
+          <pre aria-label={`${layer.label} structure`}>
+            <code>{layer.code.join("\n")}</code>
+          </pre>
+        </>
+      </div>
+    ))
+  }
+</div>
+<script>
+  const tabs = Array.from(
+    document.querySelectorAll<HTMLButtonElement>('.lab-tabs [role="tab"]'),
+  );
+  function activate(tab: HTMLButtonElement, moveFocus = false) {
+    for (const candidate of tabs) {
+      const selected = candidate === tab;
+      candidate.setAttribute("aria-selected", String(selected));
+      candidate.tabIndex = selected ? 0 : -1;
+      const panel = document.getElementById(
+        candidate.getAttribute("aria-controls") || "",
+      );
+      if (panel) panel.hidden = !selected;
+    }
+    if (moveFocus) tab.focus();
+  }
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => activate(tab));
+    tab.addEventListener("keydown", (event) => {
+      let next = index;
+      if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+      else if (event.key === "ArrowLeft")
+        next = (index - 1 + tabs.length) % tabs.length;
+      else if (event.key === "Home") next = 0;
+      else if (event.key === "End") next = tabs.length - 1;
+      else return;
+      event.preventDefault();
+      activate(tabs[next], true);
+    });
+  });
+</script>

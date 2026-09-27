@@ -1,0 +1,11 @@
+node_modules
+dist
+.astro
+.git
+.github
+.qa
+.env
+.env.*
+*.log
+README.md
+CONTENT_SOURCES.md
