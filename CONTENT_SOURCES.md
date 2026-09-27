@@ -28,3 +28,5 @@ Reviewed on 2026-09-27. These references supply portfolio facts and editorial co
 - Do not add a résumé download without a supplied résumé file.
 
 - Following owner feedback, use explicit section headings and descriptive project titles; show all skills, explain the homelab in plain language, and replace dated article cards with permanent Tech Bytes and Medium links.
+
+- Latest Tech Bytes articles now come from the RSS feed at build time. The committed JSON is an offline fallback; automated publishing uses a strict fresh fetch.

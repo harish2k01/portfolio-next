@@ -9,3 +9,8 @@ dist
 *.log
 README.md
 CONTENT_SOURCES.md
+
+release-plan.json
+image-plan.json
+image.json
+RELEASING.md

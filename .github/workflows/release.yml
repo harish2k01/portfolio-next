@@ -1,0 +1,69 @@
+name: Release and refresh
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  schedule:
+    - cron: "17 1 * * *" # 06:47 IST; GitHub schedules can be delayed.
+  workflow_dispatch:
+permissions:
+  contents: read
+# All producers share one lock. The planner reconciles every unreleased merge,
+# including when GitHub replaces a pending run with a newer one.
+concurrency:
+  group: portfolio-release-and-refresh
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main' || github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    outputs:
+      targets: ${{ steps.plan.outputs.targets }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Inspect unreleased merges without mutations
+        id: inspect
+        run: node scripts/release/plan.mjs --dry-run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Validate before creating releases
+        if: steps.inspect.outputs.new_count != '0'
+        run: npm run validate
+        env:
+          BLOG_MODE: snapshot
+      - name: Reconcile labeled merges and create releases
+        id: plan
+        run: node scripts/release/plan.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-plan
+          path: release-plan.json
+  publish:
+    needs: release
+    if: needs.release.outputs.targets != '[]'
+    permissions:
+      contents: write
+      packages: write
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        target: ${{ fromJSON(needs.release.outputs.targets) }}
+    uses: ./.github/workflows/container.yml
+    with:
+      tag: ${{ matrix.target.tag }}
+      sha: ${{ matrix.target.sha }}
