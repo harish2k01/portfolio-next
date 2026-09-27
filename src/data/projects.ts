@@ -15,7 +15,7 @@ export const projects: Project[] = [
   {
     slug: "homelab-ops",
     name: "Homelab Ops",
-    headline: "A homelab with a source of truth.",
+    headline: "GitOps Kubernetes Management",
     category: "GITOPS / PLATFORM ENGINEERING",
     description:
       "My self-hosted Kubernetes environment, managed declaratively through Git and reconciled by Argo CD. From networking and storage to the applications on top.",
@@ -36,7 +36,7 @@ export const projects: Project[] = [
   {
     slug: "helm-charts",
     name: "Helm Charts",
-    headline: "Reusable by design. Portable by default.",
+    headline: "Helm Charts for Kubernetes Applications",
     category: "KUBERNETES / RELEASE ENGINEERING",
     description:
       "A library of versioned Helm charts for self-hosted applications, distributed through both a traditional Helm repository and the GHCR OCI registry.",
@@ -57,7 +57,7 @@ export const projects: Project[] = [
   {
     slug: "k8s-debug-pod",
     name: "Kubernetes Debug Pod",
-    headline: "The right tools. Inside the cluster.",
+    headline: "Kubernetes Troubleshooting Toolkit",
     category: "OPERATIONS / TROUBLESHOOTING",
     description:
       "An Ubuntu-based troubleshooting image with networking, process, database, and Kubernetes utilities—packaged for the place where the problem happens.",
@@ -77,7 +77,7 @@ export const projects: Project[] = [
   {
     slug: "grafana-dashboards",
     name: "Grafana Dashboards",
-    headline: "Visibility, kept in version control.",
+    headline: "Grafana Monitoring Dashboards",
     category: "OBSERVABILITY / DASHBOARDS",
     description:
       "A curated collection of dashboards for applications, Kubernetes platform services, Proxmox, and Raspberry Pi infrastructure, maintained as reviewable JSON.",

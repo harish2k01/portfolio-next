@@ -20,9 +20,9 @@ npm run preview   # preview the production build
 
 ## What's included
 
-- A responsive homepage with portrait, subtle orbital motion, featured projects, professional timeline, education, technical skills, writing, and contact links.
+- A responsive homepage with portrait, subtle orbital motion, featured projects, professional timeline, education, prominent grouped technical skills, blog platform links, and contact links.
 - Four project detail pages and an archive preserving all seven projects from the original portfolio, plus four additional public projects.
-- A keyboard-accessible homelab explorer with three layers: foundation, delivery, and visibility.
+- A plain-language homelab overview explaining applications, deployments, and monitoring.
 - Mobile navigation, skip link, focus indicators, reduced-motion support, print styles, and clipboard feedback with a manual-copy fallback.
 - Canonical metadata, sitemap, robots.txt, custom favicon, and a real 404 document.
 - Docker, NGINX, Compose, CI validation, and an on-demand GHCR publishing workflow.
@@ -31,19 +31,19 @@ There are no API credentials, live status counters, third-party font calls, anal
 
 ## Edit the content
 
-| File                       | Purpose                                                           |
-| -------------------------- | ----------------------------------------------------------------- |
-| `src/data/profile.ts`      | Identity, social links, career milestones, education, skills      |
-| `src/data/projects.ts`     | Featured project stories and the full archive                     |
-| `src/data/writing.ts`      | Curated articles, dates, and source URLs                          |
-| `src/assets/harish.jpg`    | Original supplied portrait; Astro produces responsive WebP assets |
-| `src/pages/index.astro`    | Homepage structure and introduction                               |
-| `src/components/Lab.astro` | Interactive homelab layers                                        |
-| `src/styles/global.css`    | Theme tokens, layout, responsive rules, print styles              |
+| File                   | Purpose                                                      |
+| ---------------------- | ------------------------------------------------------------ |
+| `src/data/profile.ts`  | Identity, social links, career milestones, education, skills |
+| `src/data/projects.ts` | Featured project stories and the full archive                |
+
+| `src/assets/harish.jpg` | Original supplied portrait; Astro produces responsive WebP assets |
+| `src/pages/index.astro` | Homepage structure and introduction |
+| `src/components/Lab.astro` | Plain-language homelab overview |
+| `src/styles/global.css` | Theme tokens, layout, responsive rules, print styles |
 
 Keep employment achievements factual. The source material provides job titles and start milestones, not quantified professional impact; the site does not invent metrics or employment end dates. See `CONTENT_SOURCES.md` for provenance and editorial choices.
 
-Articles are a curated snapshot, not a live feed. Add new posts to `src/data/writing.ts` and rebuild. Content remains available if GitHub or the blog is unavailable.
+The writing section links directly to Tech Bytes and Medium through `src/data/profile.ts`. There is no article list to maintain or feed service to configure; new posts remain discoverable through those platform links.
 
 ## Build for your domain
 
@@ -100,7 +100,7 @@ Use the existing deployment's image tag to roll back. Nothing in this repository
 
 `npm run validate` checks types, builds all seven HTML pages, checks local route/anchor/asset integrity, verifies essential retained content and sitemap routes, and guards against accidental client-framework hydration or oversized JavaScript.
 
-CI additionally builds and runs the actual production container. Browser review should cover desktop and narrow mobile widths, the menu, keyboard tab navigation, the homelab tabs, education details, copy feedback, and project pages.
+CI additionally builds and runs the actual production container. Browser review should cover desktop and narrow mobile widths, the menu, keyboard tab navigation, the homelab overview, education details, copy feedback, and project pages.
 
 ## Rights
 

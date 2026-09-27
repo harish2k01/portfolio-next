@@ -69,7 +69,7 @@ export const education = [
 
 export const skills = [
   {
-    title: "Build & operate",
+    title: "Infrastructure & containers",
     items: [
       "Kubernetes",
       "Docker",
@@ -81,11 +81,11 @@ export const skills = [
     ],
   },
   {
-    title: "Ship & automate",
+    title: "CI/CD & automation",
     items: ["Argo CD", "GitHub Actions", "Jenkins", "Git", "Python", "Bash"],
   },
   {
-    title: "Observe & test",
+    title: "Monitoring & testing",
     items: [
       "Prometheus",
       "Grafana",
@@ -96,7 +96,7 @@ export const skills = [
     ],
   },
   {
-    title: "Development foundations",
+    title: "Languages & web development",
     items: ["JavaScript", "Java", "HTML", "CSS", "Bootstrap", "Tailwind CSS"],
   },
 ];

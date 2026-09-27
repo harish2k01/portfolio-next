@@ -7,7 +7,6 @@ import Contact from "../components/Contact.astro";
 import Lab from "../components/Lab.astro";
 import { profile, experience, education, skills } from "../data/profile";
 import { projects } from "../data/projects";
-import { articles } from "../data/writing";
 ---
 
 <Layout>
@@ -27,26 +26,27 @@ import { articles } from "../data/writing";
         understanding what happens underneath.
       </p><div class="hero-actions">
         <a class="button button-primary" href="#work"
-          >Explore my work <Icon name="arrow" size={18} /></a
+          >View my projects <Icon name="arrow" size={18} /></a
         ><a class="quiet-link" href={profile.github}
           ><Icon name="github" size={18} /> GitHub</a
         ><a class="quiet-link" href={profile.linkedin}
-          ><Icon name="linkedin" size={18} /> LinkedIn</a>
+          ><Icon name="linkedin" size={18} /> LinkedIn</a
+        >
       </div>
     </div>
     <Portrait />
     <div class="hero-bottom">
       <span class="mono">Infrastructure. Intention. Iteration.</span><a
         href="#work"
-        class="scroll-cue"
-        >A little further down <span aria-hidden="true">↓</span></a>
+        class="scroll-cue">Explore projects <span aria-hidden="true">↓</span></a
+      >
     </div>
   </section>
   <section id="work" class="container section" aria-labelledby="work-heading">
     <div class="section-heading split-heading">
       <div>
-        <p class="eyebrow">01 / SELECTED WORK</p><h2 id="work-heading">
-          Less manual.<br /><span class="muted">More intentional.</span>
+        <p class="eyebrow">01 / PERSONAL PROJECTS</p><h2 id="work-heading">
+          Projects
         </h2>
       </div><p class="section-lead">
         A few things I build and operate outside my day job. Real
@@ -85,7 +85,7 @@ import { articles } from "../data/writing";
                   <div class="project-actions">
                     <>
                       <a href={`/projects/${project.slug}/`}>
-                        Inside the project <span aria-hidden="true">→</span>
+                        Project details <span aria-hidden="true">→</span>
                       </a>
                       <a class="repo-link" href={project.repo}>
                         <Icon name="github" size={16} /> Source
@@ -101,13 +101,13 @@ import { articles } from "../data/writing";
     </div>
     <a class="project-extra" href="/projects/grafana-dashboards/"
       ><span class="extra-icon" aria-hidden="true">▥</span><div>
-        <span class="mono">ALSO IN THE TOOLBOX</span><h3>
-          Grafana dashboards, maintained as code.
+        <span class="mono">OBSERVABILITY PROJECT</span><h3>
+          Grafana Monitoring Dashboards
         </h3>
       </div><Icon name="arrow" size={24} /></a
     >
     <a class="archive-link" href="/projects/"
-      >The full project archive <span class="mono">11 PROJECTS</span><Icon
+      >View all projects <span class="mono">11 PROJECTS</span><Icon
         name="arrow"
         size={20}
       /></a
@@ -119,13 +119,14 @@ import { articles } from "../data/writing";
     aria-labelledby="journey-heading"
   >
     <div class="section-heading">
-      <p class="eyebrow">02 / THE JOURNEY</p><h2 id="journey-heading">
-        Different roles.<br /><span class="muted">The same curiosity.</span>
+      <p class="eyebrow">02 / CAREER TIMELINE</p><h2 id="journey-heading">
+        Experience
       </h2><p class="section-lead">
         From software and quality engineering to site reliability. Each step
         adds another way to understand a system.
       </p><a class="quiet-link" href={profile.linkedin}
-        >View LinkedIn <Icon name="arrow" size={16} /></a>
+        >View LinkedIn <Icon name="arrow" size={16} /></a
+      >
     </div>
     <div class="timeline">
       {
@@ -153,9 +154,7 @@ import { articles } from "../data/writing";
         ))
       }
       <details class="education">
-        <summary
-          >Before that: education <Icon name="chevron" size={18} /></summary
-        ><div>
+        <summary>Education <Icon name="chevron" size={18} /></summary><div>
           {
             education.map((item) => (
               <article>
@@ -176,8 +175,10 @@ import { articles } from "../data/writing";
   <section id="about" class="container section" aria-labelledby="about-heading">
     <div class="about-layout">
       <div class="section-heading">
-        <p class="eyebrow">03 / BEYOND THE JOB TITLE</p><h2 id="about-heading">
-          A home server.<br /><span class="muted">An endless rabbit hole.</span>
+        <p class="eyebrow">03 / THE PERSON BEHIND THE SYSTEMS</p><h2
+          id="about-heading"
+        >
+          About me
         </h2>
       </div><div class="about-copy">
         <p>
@@ -202,33 +203,33 @@ import { articles } from "../data/writing";
   </section>
   <section
     id="toolkit"
-    class="container section toolkit-section"
+    class="container section"
     aria-labelledby="toolkit-heading"
   >
-    <div>
-      <p class="eyebrow">04 / THE TOOLKIT</p><h2 id="toolkit-heading">
-        Tools with<br /><span class="muted">a purpose.</span>
-      </h2>
-    </div><div class="skill-groups">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="eyebrow">04 / TECHNICAL EXPERTISE</p><h2 id="toolkit-heading">
+          Skills &amp; tools
+        </h2>
+      </div>
+      <p class="section-lead">
+        The technologies I use across infrastructure, automation, observability,
+        and software development.
+      </p>
+    </div>
+    <div class="skills-grid">
       {
-        skills.slice(0, 3).map((group, i) => (
-          <div class="skill-group">
-            <>
-              <span class="mono skill-index">0{i + 1}</span>
-              <div>
-                <>
-                  <h3>{group.title}</h3>
-                  <p>{group.items.join(" · ")}</p>
-                </>
-              </div>
-            </>
+        skills.map((group) => (
+          <div class="skill-category">
+            <h3>{group.title}</h3>
+            <ul class="skill-list">
+              {group.items.map((skill) => (
+                <li>{skill}</li>
+              ))}
+            </ul>
           </div>
         ))
-      }<details class="foundations">
-        <summary
-          >Development foundations <Icon name="chevron" size={16} /></summary
-        ><p>{skills[3].items.join(" · ")}</p>
-      </details>
+      }
     </div>
   </section>
   <section
@@ -238,38 +239,38 @@ import { articles } from "../data/writing";
   >
     <div class="section-heading split-heading">
       <div>
-        <p class="eyebrow">05 / FIELD NOTES</p><h2 id="writing-heading">
-          Learn it. Break it.<br /><span class="muted">Write it down.</span>
+        <p class="eyebrow">05 / GUIDES &amp; LESSONS</p><h2
+          id="writing-heading"
+        >
+          Blogs &amp; writing
         </h2>
-      </div><div>
-        <p class="section-lead">Practical guides and lessons from the lab.</p><a
-          class="quiet-link"
-          href={profile.blog}
-          >All articles on Tech Bytes <Icon name="arrow" size={16} /></a>
       </div>
-    </div><div class="article-list">
-      {
-        articles.map((article, i) => (
-          <a class="article-row" href={article.url}>
-            <>
-              <span class="article-index mono">0{i + 1}</span>
-              <div>
-                <>
-                  <span class="mono article-topic">{article.topic}</span>
-                  <h3>{article.title}</h3>
-                </>
-              </div>
-              <time datetime={article.datetime}>{article.date}</time>
-              <Icon name="arrow" size={24} />
-            </>
-          </a>
-        ))
-      }
-    </div><a class="medium-link quiet-link" href={profile.medium}
-      >You can also find my writing on Medium <Icon
-        name="arrow"
-        size={16}
-      /></a>
+      <p class="section-lead">
+        I share what I learn about Kubernetes, self-hosting, automation, and
+        troubleshooting. Find my articles on either platform.
+      </p>
+    </div>
+    <div class="writing-platforms">
+      <a class="writing-platform" href={profile.blog}>
+        <span class="mono">PERSONAL BLOG</span>
+        <h3>Harish’s Tech Bytes <Icon name="arrow" size={24} /></h3>
+        <p>
+          Practical guides and notes from my engineering work and homelab
+          experiments.
+        </p>
+        <span class="platform-link"
+          >Read Tech Bytes <span aria-hidden="true">↗</span></span
+        >
+      </a>
+      <a class="writing-platform" href={profile.medium}>
+        <span class="mono">MEDIUM</span>
+        <h3>Harish on Medium <Icon name="arrow" size={24} /></h3>
+        <p>More of my technical writing, collected on my Medium profile.</p>
+        <span class="platform-link"
+          >Read on Medium <span aria-hidden="true">↗</span></span
+        >
+      </a>
+    </div>
   </section>
   <Contact />
 </Layout>

@@ -26,3 +26,5 @@ Reviewed on 2026-09-27. These references supply portfolio facts and editorial co
 - The hero orbit and diagrams are conceptual illustrations of an engineering workflow, not live system telemetry.
 - Do not expose private homelab configuration, internal service addresses, credentials, or private repository contents.
 - Do not add a résumé download without a supplied résumé file.
+
+- Following owner feedback, use explicit section headings and descriptive project titles; show all skills, explain the homelab in plain language, and replace dated article cards with permanent Tech Bytes and Medium links.

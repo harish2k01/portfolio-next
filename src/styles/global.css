@@ -857,8 +857,7 @@ details summary::-webkit-details-marker {
   padding: 19px 0;
   font-size: 0.875rem;
 }
-.education summary svg,
-.foundations summary svg {
+.education summary svg {
   transition: transform 0.2s;
 }
 details[open] > summary svg {
@@ -903,169 +902,136 @@ details[open] > summary svg {
   line-height: 1.85;
   letter-spacing: -0.02em;
 }
-.lab-explorer {
-  margin-top: 56px;
+/* Clear, readable supporting content without hidden panels. */
+.homelab-overview {
+  margin-top: 48px;
+  padding: 32px;
+  background: #101722;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: #101722;
-  overflow: hidden;
 }
-.lab-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  border-bottom: 1px solid var(--line);
-  padding: 19px 26px;
-  align-items: center;
+.homelab-intro {
+  max-width: 780px;
 }
-.lab-header .mono {
-  font-size: 0.75rem;
-  color: #bac8e0;
+.homelab-intro h3 {
+  font-size: 1.35rem;
 }
-.lab-note {
-  font-size: 0.75rem;
+.homelab-overview p {
   color: var(--muted);
+  line-height: 1.85;
+  font-size: 1rem;
 }
-.lab-tabs {
-  display: flex;
-  border-bottom: 1px solid var(--line);
-  padding: 0 26px;
-  gap: 24px;
-}
-.lab-tabs button {
-  border: 0;
-  border-bottom: 2px solid transparent;
-  background: transparent;
-  padding: 18px 0;
-  color: var(--muted);
-  font-size: 0.875rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.lab-tabs button span {
-  font: 0.75rem var(--mono);
-  color: #8292ae;
-}
-.lab-tabs button[aria-selected="true"] {
-  color: var(--text);
-  border-bottom-color: var(--accent);
-}
-.lab-panel {
-  padding: 32px 28px;
+.homelab-activities {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 45px;
-  align-items: center;
-}
-.lab-panel[hidden] {
-  display: none;
-}
-.lab-panel h3 {
-  font-size: 1.2rem;
-}
-.lab-panel p {
-  font-size: 0.95rem;
-  line-height: 1.9;
-  color: var(--muted);
-  margin: 13px 0 19px;
-}
-.lab-panel pre {
-  margin: 0;
-  border-left: 1px solid var(--line);
-  padding: 12px 0 12px 35px;
-  font: 0.8rem/2.1 var(--mono);
-  color: #aac0e9;
-  overflow-x: auto;
-  max-width: 100%;
-}
-.toolkit-section {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 80px;
-}
-.skill-group {
-  display: flex;
-  gap: 22px;
-  border-bottom: 1px solid var(--line);
-  padding: 22px 0;
-}
-.skill-group:first-child {
-  padding-top: 0;
-}
-.skill-index {
-  color: #7d91b1;
-  margin-top: 3px;
-  font-size: 0.75rem;
-}
-.skill-group h3 {
-  font-size: 1.05rem;
-}
-.skill-group p {
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 2;
-  margin: 8px 0 0;
-}
-.foundations summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 20px 0;
-  font-size: 0.875rem;
-  color: var(--muted);
-}
-.foundations p {
-  font-size: 0.875rem;
-  color: var(--muted);
-  margin: 0 0 10px;
-  line-height: 2;
-}
-.article-row {
-  display: grid;
-  grid-template-columns: 40px 1fr 110px 26px;
-  align-items: center;
-  gap: 22px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  margin: 28px 0;
   border-top: 1px solid var(--line);
-  padding: 28px 0;
-  transition: color 0.2s;
+  padding-top: 26px;
 }
-.article-row:last-child {
-  border-bottom: 1px solid var(--line);
+.homelab-activities h4 {
+  font-size: 1.05rem;
+  margin: 0;
+  font-weight: 600;
 }
-.article-index {
-  font-size: 0.75rem;
-  color: #7e8fab;
+.homelab-activities p {
+  margin: 10px 0 0;
 }
-.article-topic {
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px 56px;
+}
+.skill-category {
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+.skill-category h3 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.skill-list li {
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.5;
+  padding: 9px 14px;
+  color: var(--text);
+  background: #182230;
+  border: 1px solid #2b3b51;
+  border-radius: 5px;
+}
+.writing-platforms {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+.writing-platform {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #101722;
+  transition: border-color 0.2s;
+}
+.writing-platform:hover {
+  border-color: var(--accent);
+}
+.writing-platform > .mono {
   font-size: 0.75rem;
   color: var(--accent);
 }
-.article-row h3 {
-  font-size: 1.15rem;
-  line-height: 1.6;
-  margin-top: 5px;
-  max-width: 680px;
+.writing-platform h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0 0;
+  font-size: 1.4rem;
 }
-.article-row time {
-  font-size: 0.75rem;
+.writing-platform h3 svg {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.writing-platform p {
   color: var(--muted);
-  text-align: right;
+  font-size: 1rem;
+  line-height: 1.85;
+  margin: 14px 0 24px;
 }
-.article-row > svg {
+.platform-link {
+  margin-top: auto;
   color: var(--accent);
-  transition: transform 0.2s;
+  font-size: 0.95rem;
 }
-.article-row:hover {
-  color: var(--accent);
-}
-.article-row:hover > svg {
-  transform: translate(3px, -3px);
-}
-.medium-link {
-  margin-top: 24px;
-  font-size: 0.8rem;
+@media (max-width: 760px) {
+  .homelab-overview {
+    padding: 24px 20px;
+    margin-top: 32px;
+  }
+  .homelab-activities,
+  .skills-grid,
+  .writing-platforms {
+    grid-template-columns: 1fr;
+  }
+  .homelab-activities {
+    gap: 24px;
+  }
+  .writing-platform {
+    padding: 24px 20px;
+  }
+  .skill-list li {
+    font-size: 1rem;
+    padding: 8px 12px;
+  }
 }
 .contact-section {
   padding-top: 100px;
@@ -1452,16 +1418,8 @@ details[open] > summary svg {
     font-size: 0.75rem;
   }
   .journey-section,
-  .about-layout,
-  .toolkit-section {
+  .about-layout {
     gap: 40px;
-  }
-  .lab-panel {
-    gap: 25px;
-  }
-  .lab-panel pre {
-    font-size: 0.75rem;
-    padding-left: 22px;
   }
   .contact-section {
     gap: 24px;
@@ -1538,8 +1496,7 @@ details[open] > summary svg {
     gap: 10px;
   }
   .journey-section,
-  .about-layout,
-  .toolkit-section {
+  .about-layout {
     grid-template-columns: 1fr;
     gap: 15px;
   }
@@ -1552,62 +1509,6 @@ details[open] > summary svg {
   }
   .about-copy > p {
     font-size: 1rem;
-  }
-  .lab-explorer {
-    margin-top: 35px;
-  }
-  .lab-header {
-    padding: 17px 20px;
-  }
-  .lab-note {
-    display: none;
-  }
-  .lab-tabs {
-    gap: 22px;
-    padding-inline: 20px;
-  }
-  .lab-tabs button {
-    font-size: 0.8rem;
-    gap: 7px;
-  }
-  .lab-tabs button span {
-    font-size: 0.75rem;
-  }
-  .lab-panel {
-    grid-template-columns: 1fr;
-    padding: 25px 20px;
-    gap: 22px;
-  }
-  .lab-panel pre {
-    font-size: 0.8rem;
-    border-left: 0;
-    border-top: 1px solid var(--line);
-    padding: 22px 0 0;
-  }
-  .toolkit-section {
-    gap: 30px;
-  }
-  .article-row {
-    grid-template-columns: 24px 1fr 23px;
-    gap: 15px;
-    padding: 24px 0;
-  }
-  .article-row h3 {
-    font-size: 1.05rem;
-  }
-  .article-row time {
-    grid-column: 2;
-    grid-row: auto;
-    text-align: left;
-    margin-top: -7px;
-  }
-  .article-row > svg {
-    grid-column: 3;
-    grid-row: 1;
-  }
-  .article-index {
-    align-self: start;
-    margin-top: 6px;
   }
   .contact-section {
     padding-top: 60px;
@@ -1711,14 +1612,6 @@ details[open] > summary svg {
   .hero h1 {
     font-size: 2.65rem;
   }
-  .lab-tabs {
-    gap: 16px;
-    padding-inline: 14px;
-  }
-  .lab-tabs button {
-    gap: 5px;
-    font-size: 0.75rem;
-  }
   .diagram-topline,
   .diagram-bottomline {
     font-size: 0.75rem;
@@ -1767,12 +1660,32 @@ details[open] > summary svg {
   }
 }
 @media print {
+  .homelab-overview,
+  .writing-platform,
+  .skill-list li {
+    background: white;
+    color: #111;
+  }
+  .homelab-overview p,
+  .writing-platform p {
+    color: #333;
+  }
+  .homelab-activities,
+  .skills-grid,
+  .writing-platforms {
+    display: block;
+  }
+  .skill-category,
+  .writing-platform {
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
   .site-header,
   .hero-actions,
   .hero-bottom,
   .portrait-system,
   .project-diagram,
-  .lab-tabs,
   .copy-button,
   .back-top {
     display: none;
@@ -1785,8 +1698,7 @@ details[open] > summary svg {
   .section-lead,
   .project-copy > p,
   .timeline-detail,
-  .about-copy > p,
-  .skill-group p {
+  .about-copy > p {
     color: #333;
   }
   .container {
@@ -1794,8 +1706,7 @@ details[open] > summary svg {
   }
   .hero,
   .journey-section,
-  .about-layout,
-  .toolkit-section {
+  .about-layout {
     display: block;
     min-height: 0;
     padding: 20px 0;
@@ -1806,12 +1717,6 @@ details[open] > summary svg {
   .project-row {
     display: block;
     break-inside: avoid;
-  }
-  .lab-panel[hidden] {
-    display: grid;
-  }
-  .lab-explorer {
-    background: white;
   }
   .contact-section {
     padding: 25px 0;
