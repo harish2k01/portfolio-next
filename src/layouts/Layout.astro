@@ -3,6 +3,7 @@ import "@fontsource-variable/manrope";
 import "@fontsource-variable/jetbrains-mono";
 import "../styles/global.css";
 import Icon from "../components/Icon.astro";
+import TimeMachine from "../components/TimeMachine.astro";
 import { profile } from "../data/profile";
 interface Props {
   title?: string;
@@ -99,6 +100,7 @@ const nav = [
         ><a class="back-top" href="#main" aria-label="Back to top">↑</a>
       </div>
     </footer>
+    <TimeMachine />
     <script>
       const toggle = document.querySelector<HTMLButtonElement>(".menu-button");
       const nav = document.querySelector<HTMLElement>("#navigation");

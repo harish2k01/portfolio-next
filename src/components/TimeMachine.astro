@@ -1,0 +1,374 @@
+---
+import { Image } from "astro:assets";
+import preview from "../assets/portfolio-v1.png";
+import delorean from "../assets/delorean-turntable.webp";
+
+import Icon from "./Icon.astro";
+---
+
+<div class="time-machine">
+  <button
+    class="time-machine-launcher"
+    type="button"
+    popovertarget="portfolio-time-capsule"
+    aria-label="DeLorean time machine: preview my original portfolio"
+    title="Take a trip back to portfolio v1"
+  >
+    <span class="delorean-shadow" aria-hidden="true"></span>
+    <span
+      class="delorean delorean-flight"
+      style={`--delorean-frames: url(${delorean.src})`}
+      aria-hidden="true"></span>
+  </button>
+</div>
+
+<aside
+  id="portfolio-time-capsule"
+  class="time-capsule"
+  popover="auto"
+  aria-labelledby="time-capsule-title"
+>
+  <div class="capsule-topline">
+    <span class="capsule-destination">DESTINATION / V1</span>
+    <button
+      type="button"
+      class="capsule-close"
+      popovertarget="portfolio-time-capsule"
+      popovertargetaction="hide"
+      aria-label="Close original portfolio preview"
+      ><Icon name="close" size={18} /></button
+    >
+  </div>
+  <a
+    class="capsule-link"
+    href="https://v1.harish2k01.xyz/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Visit my original portfolio, version 1 (opens in a new tab)"
+  >
+    <div class="capsule-browser" aria-hidden="true">
+      <div class="capsule-browser-bar">
+        <span>● ● ●</span><span>v1.harish2k01.xyz</span>
+      </div>
+      <Image
+        src={preview}
+        alt=""
+        width={600}
+        height={400}
+        format="webp"
+        quality={80}
+        loading="lazy"
+      />
+    </div>
+    <div class="capsule-copy">
+      <h2 id="time-capsule-title">Back to the first version.</h2>
+      <p>A little time travel to my original portfolio.</p>
+      <span class="capsule-cta"
+        >Visit portfolio v1 <Icon name="arrow" size={17} /></span
+      >
+      <span class="capsule-new-tab">Opens in a new tab</span>
+    </div>
+  </a>
+  <div class="capsule-bottomline">
+    <span>Different era. Same curiosity.</span><button
+      class="flight-toggle"
+      type="button"
+      aria-pressed="false">Pause flight</button
+    >
+  </div>
+  <p class="capsule-credit">
+    3D model by <a
+      href="https://poly.pizza/m/1uZKezeldGG"
+      target="_blank"
+      rel="noopener noreferrer">David Sirera</a
+    > · adapted
+  </p>
+</aside>
+
+<script>
+  const machine = document.querySelector<HTMLElement>(".time-machine");
+  const pause = document.querySelector<HTMLButtonElement>(".flight-toggle");
+  if (machine && pause) {
+    const setPaused = (paused: boolean) => {
+      machine.toggleAttribute("data-paused", paused);
+      pause.setAttribute("aria-pressed", String(paused));
+      pause.textContent = paused ? "Resume flight" : "Pause flight";
+    };
+    try {
+      setPaused(localStorage.getItem("portfolio-flight-paused") === "true");
+    } catch {
+      /* Motion still works without storage. */
+    }
+    pause.addEventListener("click", () => {
+      const paused = !machine.hasAttribute("data-paused");
+      setPaused(paused);
+      try {
+        localStorage.setItem("portfolio-flight-paused", String(paused));
+      } catch {
+        /* Keep the current-page preference. */
+      }
+    });
+  }
+</script>
+
+<style>
+  .time-machine {
+    position: fixed;
+    right: max(20px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    z-index: 40;
+  }
+  .time-machine-launcher {
+    display: grid;
+    justify-items: center;
+    position: relative;
+    --frame-width: 112px;
+    --frame-height: calc(var(--frame-width) * 2 / 3);
+    width: calc(var(--frame-width) + 12px);
+    padding: 6px;
+    border: 0;
+    border-radius: 16px;
+    background: transparent;
+    color: var(--text);
+  }
+  .delorean {
+    position: relative;
+    width: var(--frame-width);
+    height: var(--frame-height);
+    background-image: var(--delorean-frames);
+    background-repeat: no-repeat;
+    background-size: calc(var(--frame-width) * 24)
+      calc(var(--frame-height) * 16);
+    filter: drop-shadow(0 3px 3px #0005);
+  }
+  .delorean-flight {
+    animation:
+      turn-columns 0.6s steps(24) infinite,
+      turn-rows 9.6s steps(16) infinite,
+      time-hover 3.2s ease-in-out infinite;
+  }
+  @keyframes time-hover {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+  @keyframes turn-columns {
+    to {
+      background-position-x: calc(var(--frame-width) * -24);
+    }
+  }
+  @keyframes turn-rows {
+    to {
+      background-position-y: calc(var(--frame-height) * -16);
+    }
+  }
+  .delorean-shadow {
+    position: absolute;
+    bottom: 0;
+    left: 15%;
+    width: 70%;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, #9bb5ff18, transparent 70%);
+    transform-origin: center;
+    animation: time-shadow 3.2s ease-in-out infinite;
+  }
+  .time-machine:is(:hover, :focus-within, [data-paused]) .delorean-flight,
+  .time-machine:is(:hover, :focus-within, [data-paused]) .delorean-shadow,
+  .time-machine:has(+ .time-capsule:popover-open) .delorean-flight,
+  .time-machine:has(+ .time-capsule:popover-open) .delorean-shadow {
+    animation-play-state: paused;
+  }
+  @keyframes time-shadow {
+    0%,
+    100% {
+      opacity: 0.85;
+      transform: scaleX(1);
+    }
+    50% {
+      opacity: 0.45;
+      transform: scaleX(0.8);
+    }
+  }
+  .time-capsule {
+    position: fixed;
+    inset: auto max(24px, env(safe-area-inset-right))
+      calc(116px + env(safe-area-inset-bottom)) auto;
+    margin: 0;
+    width: min(328px, calc(100vw - 32px));
+    max-height: calc(100dvh - 148px);
+    overflow-y: auto;
+    padding: 16px;
+    border: 1px solid #394962;
+    border-radius: 16px;
+    background: #111924;
+    color: var(--text);
+    box-shadow:
+      0 20px 70px #0009,
+      0 0 30px #82b8ff08;
+  }
+  .time-capsule:popover-open {
+    animation: capsule-arrive 180ms ease-out;
+  }
+  @keyframes capsule-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(7px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .capsule-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .capsule-destination {
+    color: var(--accent);
+    font: 500 10px var(--mono);
+    letter-spacing: 0.12em;
+  }
+  .capsule-close {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    margin: -6px -6px -6px 0;
+    border: 0;
+    border-radius: 6px;
+    color: var(--muted);
+    background: transparent;
+  }
+  .capsule-close:hover {
+    background: #223048;
+    color: #fff;
+  }
+  .capsule-link {
+    display: block;
+    border-radius: 8px;
+  }
+  .capsule-browser {
+    border: 1px solid #2b3348;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #080a10;
+  }
+  .capsule-browser-bar {
+    display: flex;
+    gap: 25px;
+    padding: 7px 10px;
+    background: #1a2030;
+    font: 9px var(--mono);
+    color: #9ca6bd;
+  }
+  .capsule-browser-bar > span:first-child {
+    color: #6f7e98;
+    font-size: 6px;
+    align-self: center;
+    letter-spacing: 2px;
+  }
+  .capsule-browser img {
+    width: 100%;
+    height: auto;
+  }
+  .capsule-copy {
+    padding-top: 16px;
+  }
+  .capsule-copy h2 {
+    font-size: 18px;
+    line-height: 1.35;
+    letter-spacing: -0.035em;
+    margin: 0 0 8px;
+  }
+  .capsule-copy p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 15px;
+  }
+  .capsule-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 650;
+  }
+  .capsule-link:hover .capsule-cta {
+    color: #d8e4ff;
+  }
+  .capsule-new-tab {
+    display: block;
+    color: #8b9ab0;
+    font-size: 10px;
+    margin-top: 3px;
+  }
+  .capsule-bottomline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 9px;
+    color: #8b9ab0;
+  }
+  .flight-toggle {
+    border: 0;
+    padding: 5px 0 5px 5px;
+    background: none;
+    color: #b9c8df;
+    font-size: 10px;
+    white-space: nowrap;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .capsule-credit {
+    margin: 8px 0 0;
+    font-size: 9px;
+    color: var(--muted);
+  }
+  .capsule-credit a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  @media (max-width: 760px) {
+    .time-machine {
+      right: max(10px, env(safe-area-inset-right));
+      bottom: max(10px, env(safe-area-inset-bottom));
+    }
+    .time-machine-launcher {
+      --frame-width: 96px;
+    }
+    .time-capsule {
+      right: 16px;
+      bottom: calc(94px + env(safe-area-inset-bottom));
+      max-height: calc(100dvh - 120px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .delorean-flight,
+    .delorean-shadow,
+    .time-capsule:popover-open {
+      animation: none;
+    }
+    .flight-toggle {
+      display: none;
+    }
+  }
+  @media print {
+    .time-machine,
+    .time-capsule {
+      display: none !important;
+    }
+  }
+</style>

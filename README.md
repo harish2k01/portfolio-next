@@ -92,7 +92,9 @@ A daily run at 06:47 IST compares the latest three articles with the image for t
 
 See [RELEASING.md](RELEASING.md) for image tags, immutability, retry behavior, merge checks, rollback, and the first-PR acceptance test.
 
-For Kubernetes, use port **8080**, `/healthz` probes, and registry pull credentials if GHCR is private. Use an immutable image digest for exact deployments. Your GitOps/image updater must detect a changed digest and roll out a new pod to pick up new articles. `imagePullPolicy: Always` alone does not restart a running pod. These workflows publish images; they do not change the current deployment.
+The reusable `portfolio-next` Helm chart lives in [helm-charts](https://github.com/harish2k01/helm-charts/tree/main/charts/portfolio-next). Argo CD configuration and environment values live in [homelab-ops](https://github.com/harish2k01/homelab-ops). Publishing the latest release updates the deployment's image tag and digest through the existing reusable version-update workflow. Changed digests roll out new pods; unchanged images and values produce no rollout.
+
+All jobs use the dedicated `portfolio-next-runner` ARC scale set. RSS is fetched directly from the in-cluster Ghost service to avoid the HTTP 403 seen on the GitHub-hosted runner. See [DEPLOYMENT.md](DEPLOYMENT.md) for runner setup, secrets, the `harish2k01.xyz` / `v1.harish2k01.xyz` cutover, and verification.
 
 ## Verification
 
