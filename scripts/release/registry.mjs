@@ -2,8 +2,7 @@ import { appendFile, readFile, writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { contentHash } from "../blog.mjs";
 import { VERSION } from "./version.mjs";
-import { github } from "./github.mjs";
-import { execFileSync } from "node:child_process";
+import { downloadReleaseAsset } from "./github.mjs";
 
 const ACCEPT =
   "application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json";
@@ -109,26 +108,9 @@ if (
   const plan = imagePlan({ tag, sha, hash, current, immutable });
   // Repair interrupted promotion/metadata uploads without rebuilding the image.
   if (plan.action === "skip") {
-    const release = await github(`releases/tags/${tag}`);
-    const asset = release.assets.find((a) => a.name === "image.json");
-    const metadata = asset
-      ? JSON.parse(
-          execFileSync(
-            "gh",
-            [
-              "release",
-              "download",
-              tag,
-              "--repo",
-              process.env.GITHUB_REPOSITORY,
-              "--pattern",
-              "image.json",
-              "--output",
-              "-",
-            ],
-            { encoding: "utf8" },
-          ),
-        )
+    const metadataAsset = await downloadReleaseAsset(tag, "image.json");
+    const metadata = metadataAsset
+      ? JSON.parse(metadataAsset.toString("utf8"))
       : null;
     if (
       metadata?.digest !== current.digest ||

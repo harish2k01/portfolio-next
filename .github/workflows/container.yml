@@ -124,7 +124,7 @@ jobs:
       - name: Record exact image and articles on the release
         if: steps.plan.outputs.action != 'skip'
         run: |
-          gh release upload "$RELEASE_TAG" image.json src/data/blog.json --clobber
+          node scripts/release/upload.mjs
           echo 'Published image and article snapshot are attached to the GitHub release.' >> "$GITHUB_STEP_SUMMARY"
           cat image.json >> "$GITHUB_STEP_SUMMARY"
       - name: Stop test container

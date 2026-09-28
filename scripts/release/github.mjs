@@ -1,5 +1,8 @@
-export async function github(route, { method = "GET", body } = {}) {
-  const response = await fetch(
+export async function github(
+  route,
+  { method = "GET", body, fetcher = fetch } = {},
+) {
+  const response = await fetcher(
     `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/${route}`,
     {
       method,
@@ -16,6 +19,64 @@ export async function github(route, { method = "GET", body } = {}) {
     throw new Error(`GitHub ${method} ${route}: HTTP ${response.status}`);
   return response.status === 204 ? null : response.json();
 }
+
+const assetHeaders = (accept) => ({
+  Authorization: `Bearer ${process.env.GH_TOKEN}`,
+  Accept: accept,
+  "X-GitHub-Api-Version": "2022-11-28",
+});
+
+export async function downloadReleaseAsset(tag, name, fetcher = fetch) {
+  const release = await github(`releases/tags/${encodeURIComponent(tag)}`, {
+    fetcher,
+  });
+  const asset = release.assets.find((candidate) => candidate.name === name);
+  if (!asset) return null;
+  const response = await fetcher(asset.url, {
+    headers: assetHeaders("application/octet-stream"),
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (!response.ok)
+    throw new Error(`GitHub release asset ${name}: HTTP ${response.status}`);
+  return Buffer.from(await response.arrayBuffer());
+}
+
+export async function uploadReleaseAssets(tag, assets, fetcher = fetch) {
+  const release = await github(`releases/tags/${encodeURIComponent(tag)}`, {
+    fetcher,
+  });
+  const uploadUrl = release.upload_url.split("{", 1)[0];
+  if (!uploadUrl.startsWith("https://uploads.github.com/"))
+    throw new Error("GitHub returned an invalid release asset upload URL");
+
+  for (const asset of assets) {
+    for (const existing of release.assets.filter(
+      (candidate) => candidate.name === asset.name,
+    ))
+      await github(`releases/assets/${existing.id}`, {
+        method: "DELETE",
+        fetcher,
+      });
+
+    const response = await fetcher(
+      `${uploadUrl}?name=${encodeURIComponent(asset.name)}`,
+      {
+        method: "POST",
+        headers: {
+          ...assetHeaders("application/vnd.github+json"),
+          "Content-Type": "application/octet-stream",
+        },
+        body: asset.data,
+        signal: AbortSignal.timeout(30_000),
+      },
+    );
+    if (!response.ok)
+      throw new Error(
+        `GitHub release asset upload ${asset.name}: HTTP ${response.status}`,
+      );
+  }
+}
+
 export async function allPages(route) {
   const result = [];
   for (let page = 1; ; page++) {
