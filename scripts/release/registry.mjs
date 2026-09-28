@@ -145,6 +145,7 @@ if (
     hash,
     immutable: immutableTag,
     shaTag: `sha-${sha}-blog-${hash}`,
+    created: new Date().toISOString(),
   };
   await writeFile("image-plan.json", JSON.stringify(result, null, 2));
   if (process.env.GITHUB_OUTPUT)

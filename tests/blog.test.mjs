@@ -110,3 +110,21 @@ test("HTTP errors do not turn into an empty article list", async () => {
     /503/,
   );
 });
+
+test("same-day articles use publication time; invisible timestamp edits do not rebuild", () => {
+  const sameDay = items.map((a, i) => ({
+    ...a,
+    date: `2026-09-28T0${i + 1}:00:00Z`,
+  }));
+  const snapshot = normalizeArticles(sameDay);
+  assert.deepEqual(
+    snapshot.articles.map((a) => a.title),
+    ["Article 4", "Article 3", "Article 2"],
+  );
+  assert.deepEqual(normalizeArticles(snapshot.articles), snapshot);
+  const changedTime = structuredClone(snapshot);
+  changedTime.articles[0].published = "2026-09-28T04:30:00Z";
+  assert.equal(contentHash(snapshot), contentHash(changedTime));
+  changedTime.articles[0].published = "2026-09-28T02:30:00Z";
+  assert.notEqual(contentHash(snapshot), contentHash(changedTime));
+});

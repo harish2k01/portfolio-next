@@ -28,12 +28,20 @@ export function normalizeArticles(items) {
       url.hash = "";
       // Tracking query strings do not affect what the portfolio displays.
       url.search = "";
-      const date = new Date(item.date);
+      const date = new Date(item.published ?? item.date);
       if (!title || title.length > 300 || !Number.isFinite(date.getTime()))
         throw new Error("Invalid article title or date");
-      return { title, url: url.href, date: date.toISOString().slice(0, 10) };
+      return {
+        title,
+        url: url.href,
+        date: date.toISOString().slice(0, 10),
+        published: date.toISOString(),
+      };
     })
-    .sort((a, b) => b.date.localeCompare(a.date) || a.url.localeCompare(b.url));
+    .sort(
+      (a, b) =>
+        b.published.localeCompare(a.published) || a.url.localeCompare(b.url),
+    );
   const selected = articles
     .filter(({ url }) => {
       if (seen.has(url)) return false;
@@ -67,8 +75,11 @@ export function parseFeed(xml) {
 }
 
 export function contentHash(snapshot) {
+  const visible = normalizeArticles(snapshot.articles).articles.map(
+    ({ title, url, date }) => ({ title, url, date }),
+  );
   return createHash("sha256")
-    .update(JSON.stringify(normalizeArticles(snapshot.articles)))
+    .update(JSON.stringify({ schema: 1, articles: visible }))
     .digest("hex");
 }
 

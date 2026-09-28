@@ -4,17 +4,20 @@
     {
       "title": "Exploring Sofka: A Modern Terminal UI for Kubernetes",
       "url": "https://harish2k01.in/exploring-sofka-a-modern-terminal-ui-for-kubernetes/",
-      "date": "2026-09-26"
+      "date": "2026-09-26",
+      "published": "2026-09-26T13:30:00.000Z"
     },
     {
       "title": "Why Kubernetes for a Home Lab?",
       "url": "https://harish2k01.in/why-kubernetes-for-a-home-lab/",
-      "date": "2026-05-30"
+      "date": "2026-05-30",
+      "published": "2026-05-30T10:30:00.000Z"
     },
     {
       "title": "Enhancing Kubernetes Observability with Loki and Alloy",
       "url": "https://harish2k01.in/enhancing-kubernetes-observability-with-loki-and-alloy/",
-      "date": "2025-09-28"
+      "date": "2025-09-28",
+      "published": "2025-09-28T12:30:00.000Z"
     }
   ]
 }

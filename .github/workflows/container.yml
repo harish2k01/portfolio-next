@@ -78,6 +78,7 @@ jobs:
             org.opencontainers.image.url=https://github.com/${{ github.repository }}/releases/tag/${{ inputs.tag }}
             org.opencontainers.image.version=${{ inputs.tag }}
             org.opencontainers.image.revision=${{ inputs.sha }}
+            org.opencontainers.image.created=${{ steps.plan.outputs.created }}
             io.harish.portfolio.blog-sha256=${{ steps.plan.outputs.hash }}
           cache-from: type=gha,scope=portfolio
           cache-to: type=gha,mode=max,scope=portfolio
