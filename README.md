@@ -20,30 +20,33 @@ npm run preview   # preview the production build
 
 ## What's included
 
-- A responsive homepage with portrait, subtle orbital motion, featured projects, professional timeline, education, prominent grouped technical skills, blog platform links, and contact links.
+- A responsive homepage with portrait, subtle orbital motion, featured projects, professional timeline, education, prominent grouped technical skills, the latest three RSS articles and blog platform links, and contact links.
 - Four project detail pages and an archive preserving all seven projects from the original portfolio, plus four additional public projects.
 - A plain-language homelab overview explaining applications, deployments, and monitoring.
-- Mobile navigation, skip link, focus indicators, reduced-motion support, print styles, and clipboard feedback with a manual-copy fallback.
+- Subtle one-time scroll reveals, hover feedback, mobile navigation, skip link, focus indicators, reduced-motion support, print styles, and clipboard feedback with a manual-copy fallback.
 - Canonical metadata, sitemap, robots.txt, custom favicon, and a real 404 document.
-- Docker, NGINX, Compose, CI validation, and an on-demand GHCR publishing workflow.
+- Docker, NGINX, Compose, PR-label semantic releases, and content-aware GHCR refreshes.
 
 There are no API credentials, live status counters, third-party font calls, analytics, external JavaScript, contact-form backend, or Sites hosting dependencies.
 
 ## Edit the content
 
-| File                   | Purpose                                                      |
-| ---------------------- | ------------------------------------------------------------ |
-| `src/data/profile.ts`  | Identity, social links, career milestones, education, skills |
-| `src/data/projects.ts` | Featured project stories and the full archive                |
+| File                       | Purpose                                                      |
+| -------------------------- | ------------------------------------------------------------ |
+| `src/data/profile.ts`      | Identity, social links, career milestones, education, skills |
+| `src/data/projects.ts`     | Featured project stories and archive                         |
+| `src/data/blog.json`       | Validated article snapshot; generated from RSS               |
+| `scripts/blog.mjs`         | Build-time RSS fetch, normalization, and fallback            |
+| `src/assets/harish.jpg`    | Portrait, optimized by Astro                                 |
+| `src/pages/index.astro`    | Homepage structure and content                               |
+| `src/components/Lab.astro` | Open homelab workflow diagram                                |
+| `src/styles/global.css`    | Theme, layout, responsive styles, and micro-interactions     |
 
-| `src/assets/harish.jpg` | Original supplied portrait; Astro produces responsive WebP assets |
-| `src/pages/index.astro` | Homepage structure and introduction |
-| `src/components/Lab.astro` | Plain-language homelab overview |
-| `src/styles/global.css` | Theme tokens, layout, responsive rules, print styles |
+Update career milestones, project descriptions, and social links in the data files above. Layout and styling are separate from the content.
 
-Keep employment achievements factual. The source material provides job titles and start milestones, not quantified professional impact; the site does not invent metrics or employment end dates. See `CONTENT_SOURCES.md` for provenance and editorial choices.
+`npm run build` fetches the latest three Tech Bytes articles from RSS. Local builds fall back to the committed snapshot if the feed is unavailable. `npm run blog:refresh` is strict and fails without modifying the snapshot when RSS is invalid or unavailable. CI uses `BLOG_MODE=snapshot` for deterministic validation. The publisher fetches strictly before building, then freezes that snapshot for Docker.
 
-The writing section links directly to Tech Bytes and Medium through `src/data/profile.ts`. There is no article list to maintain or feed service to configure; new posts remain discoverable through those platform links.
+Tech Bytes and Medium profile links remain visible. No feed request runs in the visitor's browser. Publishing a new article requires no portfolio commit.
 
 ## Build for your domain
 
@@ -65,6 +68,7 @@ Serve `dist/` with any static web server. Preserve directory routes such as `/pr
 ## Self-host with Docker
 
 ```sh
+npm run blog:refresh
 docker compose up --build -d
 ```
 
@@ -73,6 +77,7 @@ Visit `http://localhost:8080`. Compose binds to loopback by default, ready for a
 Build/run without Compose:
 
 ```sh
+npm run blog:refresh
 docker build --build-arg SITE_URL=https://harish2k01.xyz -t portfolio-next:local .
 docker run -d --name portfolio-next -p 8080:8080 portfolio-next:local
 ```
@@ -81,27 +86,22 @@ The runtime uses unprivileged NGINX on port 8080. `/healthz` is available for he
 
 ## GitHub Actions and Kubernetes
 
-`Validate portfolio` runs on pushes to `main` and pull requests. It checks the source and generated site, builds the image, and verifies the home route, a project route, and production 404 handling.
+Open a PR with exactly one of `major`, `minor`, or `patch`. After merging to `main`, the workflow creates the next Git tag and GitHub release, then publishes a multi-platform image to `ghcr.io/harish2k01/portfolio-next`. The first `minor` PR starts at `v0.1.0`.
 
-`Publish container on demand` runs **only when manually dispatched**. It validates during the Docker build and publishes `ghcr.io/harish2k01/portfolio-next:sha-<full-commit-sha>` with provenance and an SBOM. It does not deploy to a cluster or update any existing GitOps repository.
+A daily run at 06:47 IST compares the latest three articles with the image for the latest release. Unchanged content skips the site/container build and every registry write. Changed content rebuilds that release's exact commit and updates its version alias; it does not create another Git release or tag. Feed failures leave the existing image intact.
 
-For your existing Helm/GitOps setup:
+See [RELEASING.md](RELEASING.md) for image tags, immutability, retry behavior, merge checks, rollback, and the first-PR acceptance test.
 
-1. Dispatch the publish workflow for the desired commit.
-2. Point the workload at the resulting immutable SHA tag.
-3. Set the container and service target port to **8080**.
-4. Set readiness/liveness probes to `/healthz` on port 8080.
-5. Configure registry pull credentials if the GHCR package is private.
-6. Route your domain through the existing ingress/Gateway setup.
-
-Use the existing deployment's image tag to roll back. Nothing in this repository modifies the original portfolio deployment automatically.
+For Kubernetes, use port **8080**, `/healthz` probes, and registry pull credentials if GHCR is private. Use an immutable image digest for exact deployments. Your GitOps/image updater must detect a changed digest and roll out a new pod to pick up new articles. `imagePullPolicy: Always` alone does not restart a running pod. These workflows publish images; they do not change the current deployment.
 
 ## Verification
 
-`npm run validate` checks types, builds all seven HTML pages, checks local route/anchor/asset integrity, verifies essential retained content and sitemap routes, and guards against accidental client-framework hydration or oversized JavaScript.
+`npm run validate` checks types, builds all seven HTML pages, checks local route/anchor/asset integrity, verifies essential retained content and sitemap routes, guards against accidental client-framework hydration or oversized JavaScript, and exercises RSS/release/image decision logic.
 
 CI additionally builds and runs the actual production container. Browser review should cover desktop and narrow mobile widths, the menu, keyboard tab navigation, the homelab overview, education details, copy feedback, and project pages.
 
 ## Rights
 
 No open-source license has been assigned. The portrait and personal writing remain the owner's content. Bundled font packages retain their own license notices in their package distributions.
+
+The npm manifest has `private: true` to prevent accidental npm publication; it does not control GitHub repository visibility.

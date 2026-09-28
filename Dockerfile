@@ -5,6 +5,8 @@ RUN npm ci
 COPY . .
 ARG SITE_URL=https://harish2k01.xyz
 ENV SITE_URL=$SITE_URL
+# The publisher prepares a validated RSS snapshot before the Docker build.
+ENV BLOG_MODE=snapshot
 RUN npm run validate
 
 FROM nginxinc/nginx-unprivileged:stable-alpine AS runtime

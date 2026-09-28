@@ -163,6 +163,81 @@ const nav = [
         { rootMargin: "-15% 0px -65% 0px" },
       );
       sections.forEach((section) => observer.observe(section));
+      // Each independently visible block reveals once, inside the viewport.
+      // The pending attribute is only added when animation support is available.
+      const motion = matchMedia("(prefers-reduced-motion: reduce)");
+      const animations = new Map<Element, Animation>();
+      const pending = new Set<HTMLElement>();
+      function show(element: HTMLElement, animate = false, delay = 0) {
+        reveals.unobserve(element);
+        pending.delete(element);
+        element.removeAttribute("data-reveal");
+        if (
+          !animate ||
+          motion.matches ||
+          element.contains(document.activeElement)
+        ) {
+          animations.get(element)?.cancel();
+          animations.delete(element);
+          return;
+        }
+        const animation = element.animate(
+          [
+            { opacity: 0, transform: "translateY(20px)" },
+            { opacity: 1, transform: "translateY(0)" },
+          ],
+          {
+            duration: 650,
+            delay,
+            easing: "cubic-bezier(.22,1,.36,1)",
+            fill: "backwards",
+          },
+        );
+        animations.set(element, animation);
+        animation.onfinish = () => animations.delete(element);
+      }
+      const reveals = new IntersectionObserver(
+        (entries) => {
+          let index = 0;
+          for (const entry of entries) {
+            if (!entry.isIntersecting || entry.intersectionRatio < 0.12) continue;
+            show(
+              entry.target as HTMLElement,
+              true,
+              Math.min(index++ * 80, 160),
+            );
+          }
+        },
+        {
+          threshold: 0.12,
+          rootMargin: `-80px 0px -${Math.min(120, Math.round(innerHeight * 0.12))}px 0px`,
+        },
+      );
+      if (!motion.matches && typeof Element.prototype.animate === "function")
+        document
+          .querySelectorAll<HTMLElement>(
+            ".section-heading, .project-visual-link, .project-copy, .timeline-item, .about-copy, .skill-category, .homelab-step, .article-card, .writing-platform, .contact-section > div",
+          )
+          .forEach((element) => {
+            pending.add(element);
+            element.dataset.reveal = "pending";
+            reveals.observe(element);
+          });
+      // Keyboard navigation must never land on transparent content.
+      document.addEventListener("focusin", (event) => {
+        const target = event.target;
+        if (!(target instanceof Node)) return;
+        for (const element of new Set([...pending, ...animations.keys()]))
+          if (element.contains(target)) show(element as HTMLElement);
+      });
+      motion.addEventListener("change", () => {
+        if (motion.matches) {
+          pending.forEach((element) => show(element));
+          reveals.disconnect();
+          animations.forEach((animation) => animation.cancel());
+          animations.clear();
+        }
+      });
     </script>
   </body>
 </html>
