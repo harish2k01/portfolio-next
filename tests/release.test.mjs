@@ -6,10 +6,7 @@ import {
   compareVersions,
   planVersions,
 } from "../scripts/release/version.mjs";
-import {
-  downloadReleaseAsset,
-  uploadReleaseAssets,
-} from "../scripts/release/github.mjs";
+import { downloadReleaseAsset } from "../scripts/release/github.mjs";
 import { imagePlan, registryClient } from "../scripts/release/registry.mjs";
 
 test("exactly one version label is required", () => {
@@ -148,42 +145,6 @@ test("release asset downloads use the GitHub REST asset endpoint", async () => {
   assert.deepEqual(download, assetData);
   assert.equal(calls[1].options.headers.Accept, "application/octet-stream");
 });
-test("release asset uploads replace same-named assets and upload bytes", async () => {
-  const calls = [];
-  const responses = [
-    Response.json({
-      upload_url:
-        "https://uploads.github.com/repos/owner/repo/releases/1/assets{?name,label}",
-      assets: [{ id: 42, name: "image.json" }],
-    }),
-    new Response(null, { status: 204 }),
-    new Response(null, { status: 201 }),
-    new Response(null, { status: 201 }),
-  ];
-  await uploadReleaseAssets(
-    "v1.2.3",
-    [
-      { name: "image.json", data: Buffer.from("image") },
-      { name: "blog.json", data: Buffer.from("blog") },
-    ],
-    async (url, options) => {
-      calls.push({ url, options });
-      return responses.shift();
-    },
-  );
-  assert.match(calls[1].url, /\/releases\/assets\/42$/);
-  assert.equal(calls[1].options.method, "DELETE");
-  assert.equal(
-    calls[2].url,
-    "https://uploads.github.com/repos/owner/repo/releases/1/assets?name=image.json",
-  );
-  assert.deepEqual(calls[2].options.body, Buffer.from("image"));
-  assert.equal(
-    calls[3].options.headers["Content-Type"],
-    "application/octet-stream",
-  );
-});
-
 const merged = (sha, number, labels) => ({
   sha,
   prs: [

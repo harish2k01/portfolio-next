@@ -41,42 +41,6 @@ export async function downloadReleaseAsset(tag, name, fetcher = fetch) {
   return Buffer.from(await response.arrayBuffer());
 }
 
-export async function uploadReleaseAssets(tag, assets, fetcher = fetch) {
-  const release = await github(`releases/tags/${encodeURIComponent(tag)}`, {
-    fetcher,
-  });
-  const uploadUrl = release.upload_url.split("{", 1)[0];
-  if (!uploadUrl.startsWith("https://uploads.github.com/"))
-    throw new Error("GitHub returned an invalid release asset upload URL");
-
-  for (const asset of assets) {
-    for (const existing of release.assets.filter(
-      (candidate) => candidate.name === asset.name,
-    ))
-      await github(`releases/assets/${existing.id}`, {
-        method: "DELETE",
-        fetcher,
-      });
-
-    const response = await fetcher(
-      `${uploadUrl}?name=${encodeURIComponent(asset.name)}`,
-      {
-        method: "POST",
-        headers: {
-          ...assetHeaders("application/vnd.github+json"),
-          "Content-Type": "application/octet-stream",
-        },
-        body: asset.data,
-        signal: AbortSignal.timeout(30_000),
-      },
-    );
-    if (!response.ok)
-      throw new Error(
-        `GitHub release asset upload ${asset.name}: HTTP ${response.status}`,
-      );
-  }
-}
-
 export async function allPages(route) {
   const result = [];
   for (let page = 1; ; page++) {
