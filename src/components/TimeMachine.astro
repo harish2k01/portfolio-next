@@ -142,9 +142,9 @@ import Icon from "./Icon.astro";
   }
   .delorean-flight {
     animation:
-      turn-columns 0.8s steps(8) infinite,
-      turn-rows 6.4s steps(8) infinite,
-      time-hover 6.4s ease-in-out infinite;
+      turn-columns 1.2s steps(8) infinite,
+      turn-rows 9.6s steps(8) infinite,
+      time-hover 3.2s ease-in-out infinite;
   }
   @keyframes time-hover {
     0%,
@@ -152,7 +152,7 @@ import Icon from "./Icon.astro";
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-6px);
+      transform: translateY(-12px);
     }
   }
   @keyframes turn-columns {
@@ -174,7 +174,7 @@ import Icon from "./Icon.astro";
     border-radius: 50%;
     background: radial-gradient(ellipse, #9bb5ff18, transparent 70%);
     transform-origin: center;
-    animation: time-shadow 6.4s ease-in-out infinite;
+    animation: time-shadow 3.2s ease-in-out infinite;
   }
   .time-machine:is(:hover, :focus-within, [data-paused]) .delorean-flight,
   .time-machine:is(:hover, :focus-within, [data-paused]) .delorean-shadow,
