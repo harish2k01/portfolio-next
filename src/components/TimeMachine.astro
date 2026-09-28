@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import preview from "../assets/portfolio-v1.png";
-import delorean from "../assets/delorean-flight.png";
+import delorean from "../assets/delorean-turntable.webp";
 
 import Icon from "./Icon.astro";
 ---
@@ -15,16 +15,10 @@ import Icon from "./Icon.astro";
     title="Take a trip back to portfolio v1"
   >
     <span class="delorean-shadow" aria-hidden="true"></span>
-    <Image
+    <span
       class="delorean delorean-flight"
-      src={delorean}
-      alt=""
-      width={360}
-      format="webp"
-      quality={90}
-      loading="eager"
-      aria-hidden="true"
-    />
+      style={`--delorean-frames: url(${delorean.src})`}
+      aria-hidden="true"></span>
   </button>
 </div>
 
@@ -82,6 +76,13 @@ import Icon from "./Icon.astro";
       aria-pressed="false">Pause flight</button
     >
   </div>
+  <p class="capsule-credit">
+    3D model by <a
+      href="https://poly.pizza/m/1uZKezeldGG"
+      target="_blank"
+      rel="noopener noreferrer">David Sirera</a
+    > · adapted
+  </p>
 </aside>
 
 <script>
@@ -121,7 +122,9 @@ import Icon from "./Icon.astro";
     display: grid;
     justify-items: center;
     position: relative;
-    width: 132px;
+    --frame-width: 112px;
+    --frame-height: calc(var(--frame-width) * 2 / 3);
+    width: calc(var(--frame-width) + 12px);
     padding: 6px;
     border: 0;
     border-radius: 16px;
@@ -130,40 +133,44 @@ import Icon from "./Icon.astro";
   }
   .delorean {
     position: relative;
-    width: 120px;
-    height: auto;
-    overflow: visible;
-    filter: drop-shadow(0 5px 5px #0008);
+    width: var(--frame-width);
+    height: var(--frame-height);
+    background-image: var(--delorean-frames);
+    background-repeat: no-repeat;
+    background-size: calc(var(--frame-width) * 8) calc(var(--frame-height) * 8);
+    filter: drop-shadow(0 3px 3px #0005);
   }
   .delorean-flight {
-    transform-origin: 50% 60%;
-    animation: time-flight 5.4s ease-in-out infinite;
+    animation:
+      turn-columns 0.8s steps(8) infinite,
+      turn-rows 6.4s steps(8) infinite;
+  }
+  @keyframes turn-columns {
+    to {
+      background-position-x: calc(var(--frame-width) * -8);
+    }
+  }
+  @keyframes turn-rows {
+    to {
+      background-position-y: calc(var(--frame-height) * -8);
+    }
   }
   .delorean-shadow {
     position: absolute;
     bottom: 0;
     left: 15%;
     width: 70%;
-    height: 12px;
+    height: 8px;
     border-radius: 50%;
-    background: radial-gradient(ellipse, #89daff30, transparent 70%);
+    background: radial-gradient(ellipse, #9bb5ff18, transparent 70%);
     transform-origin: center;
-    animation: time-shadow 5.4s ease-in-out infinite;
+    animation: time-shadow 6.4s ease-in-out infinite;
   }
   .time-machine:is(:hover, :focus-within, [data-paused]) .delorean-flight,
   .time-machine:is(:hover, :focus-within, [data-paused]) .delorean-shadow,
   .time-machine:has(+ .time-capsule:popover-open) .delorean-flight,
   .time-machine:has(+ .time-capsule:popover-open) .delorean-shadow {
     animation-play-state: paused;
-  }
-  @keyframes time-flight {
-    0%,
-    100% {
-      transform: translateY(1px) rotate(-3deg);
-    }
-    50% {
-      transform: translateY(-7px) rotate(3deg);
-    }
   }
   @keyframes time-shadow {
     0%,
@@ -214,7 +221,7 @@ import Icon from "./Icon.astro";
     margin-bottom: 12px;
   }
   .capsule-destination {
-    color: #edb17f;
+    color: var(--accent);
     font: 500 10px var(--mono);
     letter-spacing: 0.12em;
   }
@@ -314,17 +321,22 @@ import Icon from "./Icon.astro";
     text-decoration: underline;
     text-underline-offset: 3px;
   }
+  .capsule-credit {
+    margin: 8px 0 0;
+    font-size: 9px;
+    color: var(--muted);
+  }
+  .capsule-credit a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
   @media (max-width: 760px) {
     .time-machine {
       right: max(10px, env(safe-area-inset-right));
       bottom: max(10px, env(safe-area-inset-bottom));
     }
     .time-machine-launcher {
-      width: 108px;
-    }
-    .delorean {
-      width: 96px;
-      height: auto;
+      --frame-width: 96px;
     }
     .time-capsule {
       right: 16px;
