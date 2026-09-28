@@ -123,10 +123,47 @@ jobs:
           docker buildx imagetools create "${args[@]}" "$IMAGE@$DIGEST"
       - name: Record exact image and articles on the release
         if: steps.plan.outputs.action != 'skip'
-        run: |
-          node scripts/release/upload.mjs
-          echo 'Published image and article snapshot are attached to the GitHub release.' >> "$GITHUB_STEP_SUMMARY"
-          cat image.json >> "$GITHUB_STEP_SUMMARY"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("node:fs");
+            const path = require("node:path");
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const { data: release } = await github.rest.repos.getReleaseByTag({
+              owner,
+              repo,
+              tag: process.env.RELEASE_TAG,
+            });
+
+            for (const file of ["image.json", "src/data/blog.json"]) {
+              const name = path.basename(file);
+              for (const asset of release.assets.filter((item) => item.name === name)) {
+                await github.rest.repos.deleteReleaseAsset({
+                  owner,
+                  repo,
+                  asset_id: asset.id,
+                });
+              }
+
+              const data = fs.readFileSync(file);
+              await github.rest.repos.uploadReleaseAsset({
+                owner,
+                repo,
+                release_id: release.id,
+                name,
+                data,
+                headers: {
+                  "content-type": "application/octet-stream",
+                  "content-length": fs.statSync(file).size,
+                },
+              });
+            }
+
+            fs.appendFileSync(
+              process.env.GITHUB_STEP_SUMMARY,
+              `Published image and article snapshot are attached to the GitHub release.\n${fs.readFileSync("image.json", "utf8")}`,
+            );
       - name: Stop test container
         if: always()
         run: docker rm -f portfolio-test || true
