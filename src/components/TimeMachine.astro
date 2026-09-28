@@ -1,6 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import preview from "../assets/portfolio-v1.png";
+import delorean from "../assets/delorean-flight.png";
+
 import Icon from "./Icon.astro";
 ---
 
@@ -12,127 +14,17 @@ import Icon from "./Icon.astro";
     aria-label="DeLorean time machine: preview my original portfolio"
     title="Take a trip back to portfolio v1"
   >
-    <svg class="delorean" viewBox="0 0 220 132" aria-hidden="true">
-      <defs>
-        <linearGradient id="delorean-steel" x1="0" y1="0" x2="0.6" y2="1">
-          <stop stop-color="#f2f5f7"></stop><stop
-            offset=".45"
-            stop-color="#a5b3c2"></stop>
-          <stop offset="1" stop-color="#4f6378"></stop>
-        </linearGradient>
-        <linearGradient id="delorean-glass" x1="0" y1="0" x2="1" y2="1">
-          <stop stop-color="#84c6df"></stop><stop
-            offset=".3"
-            stop-color="#1c344b"></stop>
-          <stop offset="1" stop-color="#0b1524"></stop>
-        </linearGradient>
-        <radialGradient id="delorean-glow">
-          <stop stop-color="#89daff" stop-opacity=".4"></stop>
-          <stop offset="1" stop-color="#89daff" stop-opacity="0"></stop>
-        </radialGradient>
-      </defs>
-      <ellipse
-        class="delorean-shadow"
-        cx="111"
-        cy="119"
-        rx="78"
-        ry="11"
-        fill="url(#delorean-glow)"></ellipse>
-      <g class="delorean-flight" stroke-linejoin="round" stroke-linecap="round">
-        <!-- The folded wheels and rear reactor give the flying time machine its silhouette. -->
-        <g stroke="#7dd9ff" stroke-width="2" opacity=".65">
-          <path d="m186 71 22-8m-22 15 15-5"></path><path
-            d="m52 109-13 7m121-24 15 1"></path>
-        </g>
-        <g fill="#101923" stroke="#7b91a5" stroke-width="2">
-          <ellipse
-            cx="59"
-            cy="101"
-            rx="19"
-            ry="8"
-            transform="rotate(-15 59 101)"></ellipse>
-          <ellipse
-            cx="164"
-            cy="83"
-            rx="18"
-            ry="7"
-            transform="rotate(-15 164 83)"></ellipse>
-          <ellipse
-            cx="151"
-            cy="59"
-            rx="14"
-            ry="6"
-            transform="rotate(-15 151 59)"></ellipse>
-        </g>
-        <g fill="none" stroke="#9cddf4" stroke-width="2">
-          <path d="m46 104 25-7m82-12 25-7"></path>
-        </g>
-        <path
-          d="m20 77 83-29 88 20-9 21-98 24-64-20Z"
-          fill="#62778d"
-          stroke="#b8c6d3"
-          stroke-width="1.4"></path>
-        <path d="m20 77 64 15 98-25 9 1-9 21-98 24-64-20Z" fill="#394b5e"
-        ></path>
-        <path
-          d="m20 77 50-21 62 15-48 21Z"
-          fill="url(#delorean-steel)"
-          stroke="#e0e6ec"></path>
-        <path
-          d="m70 56 28-30 44 8 22 28-32 9Z"
-          fill="url(#delorean-steel)"
-          stroke="#d2dce7"
-          stroke-width="1.2"></path>
-        <path
-          d="m79 54 22-23 26 6-8 26Z"
-          fill="url(#delorean-glass)"
-          stroke="#152638"
-          stroke-width="2"></path>
-        <path
-          d="m130 38 10 2 16 21-29 7Z"
-          fill="url(#delorean-glass)"
-          stroke="#152638"
-          stroke-width="2"></path>
-        <path
-          d="m126 73 33-9-1 20-31 9Z"
-          fill="url(#delorean-steel)"
-          stroke="#40566c"></path>
-        <path d="m143 71 10-3" stroke="#263d52" stroke-width="2"></path>
-        <!-- Raised gull-wing door. -->
-        <path
-          d="m102 28 8-17 43 8-11 15Z"
-          fill="#bac7d2"
-          stroke="#edf3f8"
-          stroke-width="1.2"></path>
-        <path d="m113 15 34 7-6 8-31-6Z" fill="url(#delorean-glass)"></path>
-        <path d="m103 28 5 9" stroke="#63798f" stroke-width="2"></path>
-        <!-- Reactor, cooling vents and exposed blue time-circuit cabling. -->
-        <path d="m161 55 18-5 17 11-15 7Z" fill="#172638" stroke="#90a3b8"
-        ></path>
-        <path
-          d="m171 48 3-10 15 5-1 14m-27 2 3-13 9 3"
-          fill="#283b4f"
-          stroke="#9bafc3"></path>
-        <path
-          d="m167 44 4 1m5-1 8 3m-9 1 9 3m-17-2 4 1"
-          stroke="#0a1421"
-          stroke-width="2"></path>
-        <path
-          d="m81 96 39-10 4-18 34-9 6 8 22-4"
-          fill="none"
-          stroke="#7fd9fa"
-          stroke-width="2"></path>
-        <path d="m84 103 36-9m47-15 13-4" stroke="#c4d2df"></path>
-        <path d="m22 81 58 14v11L22 91Z" fill="#152131" stroke="#9aabbd"></path>
-        <path d="m27 84 13 3v5l-13-3Zm34 8 13 3v5l-13-3Z" fill="#e3f4ff"></path>
-        <path d="m43 89 15 4m-15-1 15 4" stroke="#687e93"></path>
-        <path d="m179 72 8-2-2 6-8 2Z" fill="#ff925d"></path>
-        <path d="m25 96 55 14" stroke="#182a3f" stroke-width="3"></path>
-      </g>
-    </svg>
-    <span class="time-machine-label"
-      >Back to v1 <span aria-hidden="true">↗</span></span
-    >
+    <span class="delorean-shadow" aria-hidden="true"></span>
+    <Image
+      class="delorean delorean-flight"
+      src={delorean}
+      alt=""
+      width={360}
+      format="webp"
+      quality={90}
+      loading="eager"
+      aria-hidden="true"
+    />
   </button>
 </div>
 
@@ -187,7 +79,8 @@ import Icon from "./Icon.astro";
     <span>Different era. Same curiosity.</span><button
       class="flight-toggle"
       type="button"
-      aria-pressed="false">Pause flight</button>
+      aria-pressed="false">Pause flight</button
+    >
   </div>
 </aside>
 
@@ -227,16 +120,18 @@ import Icon from "./Icon.astro";
   .time-machine-launcher {
     display: grid;
     justify-items: center;
-    width: 122px;
-    padding: 3px 4px 8px;
+    position: relative;
+    width: 132px;
+    padding: 6px;
     border: 0;
     border-radius: 16px;
-    background: radial-gradient(ellipse at 50% 65%, #101a29eb, #0c101700 74%);
+    background: transparent;
     color: var(--text);
   }
   .delorean {
-    width: 116px;
-    height: 70px;
+    position: relative;
+    width: 120px;
+    height: auto;
     overflow: visible;
     filter: drop-shadow(0 5px 5px #0008);
   }
@@ -245,24 +140,15 @@ import Icon from "./Icon.astro";
     animation: time-flight 5.4s ease-in-out infinite;
   }
   .delorean-shadow {
+    position: absolute;
+    bottom: 0;
+    left: 15%;
+    width: 70%;
+    height: 12px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, #89daff30, transparent 70%);
     transform-origin: center;
     animation: time-shadow 5.4s ease-in-out infinite;
-  }
-  .time-machine-label {
-    font: 500 10px var(--mono);
-    letter-spacing: 0.08em;
-    padding: 3px 8px;
-    border: 1px solid #34445c;
-    border-radius: 20px;
-    background: #101824ed;
-    color: #bcccec;
-  }
-  .time-machine-label span {
-    color: var(--accent);
-  }
-  .time-machine-launcher:hover .time-machine-label {
-    border-color: var(--accent);
-    color: #fff;
   }
   .time-machine:is(:hover, :focus-within, [data-paused]) .delorean-flight,
   .time-machine:is(:hover, :focus-within, [data-paused]) .delorean-shadow,
@@ -293,10 +179,10 @@ import Icon from "./Icon.astro";
   .time-capsule {
     position: fixed;
     inset: auto max(24px, env(safe-area-inset-right))
-      calc(122px + env(safe-area-inset-bottom)) auto;
+      calc(116px + env(safe-area-inset-bottom)) auto;
     margin: 0;
     width: min(328px, calc(100vw - 32px));
-    max-height: calc(100dvh - 154px);
+    max-height: calc(100dvh - 148px);
     overflow-y: auto;
     padding: 16px;
     border: 1px solid #394962;
@@ -434,19 +320,16 @@ import Icon from "./Icon.astro";
       bottom: max(10px, env(safe-area-inset-bottom));
     }
     .time-machine-launcher {
-      width: 100px;
+      width: 108px;
     }
     .delorean {
       width: 96px;
-      height: 58px;
-    }
-    .time-machine-label {
-      font-size: 9px;
+      height: auto;
     }
     .time-capsule {
       right: 16px;
-      bottom: calc(108px + env(safe-area-inset-bottom));
-      max-height: calc(100dvh - 134px);
+      bottom: calc(94px + env(safe-area-inset-bottom));
+      max-height: calc(100dvh - 120px);
     }
   }
   @media (prefers-reduced-motion: reduce) {
