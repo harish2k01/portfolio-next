@@ -137,13 +137,14 @@ import Icon from "./Icon.astro";
     height: var(--frame-height);
     background-image: var(--delorean-frames);
     background-repeat: no-repeat;
-    background-size: calc(var(--frame-width) * 8) calc(var(--frame-height) * 8);
+    background-size: calc(var(--frame-width) * 24)
+      calc(var(--frame-height) * 16);
     filter: drop-shadow(0 3px 3px #0005);
   }
   .delorean-flight {
     animation:
-      turn-columns 1.2s steps(8) infinite,
-      turn-rows 9.6s steps(8) infinite,
+      turn-columns 0.6s steps(24) infinite,
+      turn-rows 9.6s steps(16) infinite,
       time-hover 3.2s ease-in-out infinite;
   }
   @keyframes time-hover {
@@ -157,12 +158,12 @@ import Icon from "./Icon.astro";
   }
   @keyframes turn-columns {
     to {
-      background-position-x: calc(var(--frame-width) * -8);
+      background-position-x: calc(var(--frame-width) * -24);
     }
   }
   @keyframes turn-rows {
     to {
-      background-position-y: calc(var(--frame-height) * -8);
+      background-position-y: calc(var(--frame-height) * -16);
     }
   }
   .delorean-shadow {

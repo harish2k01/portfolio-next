@@ -140,16 +140,20 @@ function cylinder(x, y, z, r, h, color) {
 cylinder(0, 0.75, -1.82, 0.17, 0.65, [181, 191, 201]);
 cylinder(0, 1.09, -1.82, 0.19, 0.08, [66, 79, 98]);
 
-const W = 192,
-  H = 128,
-  COUNT = 64;
+const W = 144,
+  H = 96,
+  COLUMNS = 24,
+  ROWS = 16,
+  COUNT = COLUMNS * ROWS;
+const projectionScale = W * (27 / 192);
 const elevation = 0.36;
 function project([x, y, z], angle) {
   const a = x * Math.cos(angle) + z * Math.sin(angle),
     b = -x * Math.sin(angle) + z * Math.cos(angle);
   return [
-    W / 2 + a * 27,
-    H * 0.59 - (y * Math.cos(elevation) - b * Math.sin(elevation)) * 27,
+    W / 2 + a * projectionScale,
+    H * 0.59 -
+      (y * Math.cos(elevation) - b * Math.sin(elevation)) * projectionScale,
     y * Math.sin(elevation) + b * Math.cos(elevation),
   ];
 }
@@ -218,16 +222,25 @@ for (let frame = 0; frame < COUNT; frame++) {
     .toBuffer();
   frames.push({
     input: image,
-    left: (frame % 8) * W,
-    top: Math.floor(frame / 8) * H,
+    left: (frame % COLUMNS) * W,
+    top: Math.floor(frame / COLUMNS) * H,
   });
 }
 await sharp({
-  create: { width: W * 8, height: H * 8, channels: 4, background: "#00000000" },
+  create: {
+    width: W * COLUMNS,
+    height: H * ROWS,
+    channels: 4,
+    background: "#00000000",
+  },
 })
   .composite(frames)
-  .webp({ quality: 90, alphaQuality: 100 })
+  .webp({ quality: 80, alphaQuality: 90, effort: 6 })
   .toFile(
-    fileURLToPath(new URL("../src/assets/delorean-turntable.webp", import.meta.url)),
+    fileURLToPath(
+      new URL("../src/assets/delorean-turntable.webp", import.meta.url),
+    ),
   );
-console.log(`Rendered ${COUNT} views into a ${W * 8}×${H * 8} sprite sheet.`);
+console.log(
+  `Rendered ${COUNT} views into a ${W * COLUMNS}×${H * ROWS} sprite sheet.`,
+);
