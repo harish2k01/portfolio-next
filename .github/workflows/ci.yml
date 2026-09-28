@@ -63,3 +63,12 @@ jobs:
       - name: Stop test container
         if: always()
         run: docker rm -f portfolio-test || true
+      - uses: docker/setup-buildx-action@v3
+      - name: Build both architectures without QEMU (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          outputs: type=oci,dest=${{ runner.temp }}/portfolio-multiarch.tar
+          provenance: true
+          sbom: true

@@ -22,6 +22,10 @@ Public fork PR jobs are excluded from the self-hosted validation jobs. Keep GitH
 
 The new runner must be registered before merging or running the portfolio workflow changes; otherwise jobs remain queued. The runner pod does not mount a Kubernetes service-account token. Docker builds use ARC's separate ephemeral DinD container.
 
+The static Astro build runs on `$BUILDPLATFORM`; the runtime stage copies its output into each platform's NGINX image without executing target-architecture commands. AMD64 and ARM64 publication therefore needs no QEMU registration or host `binfmt_misc` support. PR CI also builds both platforms, including SBOM/provenance, without pushing an image.
+
+For recovery of `v0.1.0` and `v0.2.0`, the publisher creates a temporary copy of their Dockerfile with only the Node build-stage platform pinned. It verifies the expected instruction before building and leaves release tags and source files untouched. The image's `io.harish.portfolio.packaging-revision` label records the publishing workflow revision. After merging the fix, dispatch **Release and refresh** from main if needed; rerunning the old failed run would still use its old workflow.
+
 ## RSS 403 recovery
 
 The first `v0.1.0` release was created, but image publication stopped because the GitHub-hosted runner received HTTP 403 from the public RSS endpoint. Fetching the same feed locally succeeded.
