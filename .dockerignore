@@ -8,7 +8,6 @@ dist
 .env.*
 *.log
 README.md
-CONTENT_SOURCES.md
 
 release-plan.json
 image-plan.json

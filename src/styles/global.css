@@ -1775,6 +1775,12 @@ details[open] > summary svg {
     font-size: 0.75rem;
   }
 }
+/* JavaScript opts individual blocks in; no-JS and print content stay visible. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  [data-reveal="pending"] {
+    opacity: 0;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

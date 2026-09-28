@@ -29,6 +29,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
@@ -36,6 +37,7 @@ jobs:
       - run: npm ci
       - run: npm run validate
       - name: Dry-run release reconciliation (read-only)
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         run: node scripts/release/plan.mjs --dry-run
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

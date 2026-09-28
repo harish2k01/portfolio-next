@@ -37,12 +37,12 @@ There are no API credentials, live status counters, third-party font calls, anal
 | `src/data/projects.ts`     | Featured project stories and archive                         |
 | `src/data/blog.json`       | Validated article snapshot; generated from RSS               |
 | `scripts/blog.mjs`         | Build-time RSS fetch, normalization, and fallback            |
-| `src/assets/harish.jpg`    | Supplied portrait, optimized by Astro                        |
+| `src/assets/harish.jpg`    | Portrait, optimized by Astro                                 |
 | `src/pages/index.astro`    | Homepage structure and content                               |
 | `src/components/Lab.astro` | Open homelab workflow diagram                                |
 | `src/styles/global.css`    | Theme, layout, responsive styles, and micro-interactions     |
 
-Keep employment achievements factual. The source material provides job titles and start milestones, not quantified professional impact; the site does not invent metrics or employment end dates. See `CONTENT_SOURCES.md` for provenance and editorial choices.
+Update career milestones, project descriptions, and social links in the data files above. Layout and styling are separate from the content.
 
 `npm run build` fetches the latest three Tech Bytes articles from RSS. Local builds fall back to the committed snapshot if the feed is unavailable. `npm run blog:refresh` is strict and fails without modifying the snapshot when RSS is invalid or unavailable. CI uses `BLOG_MODE=snapshot` for deterministic validation. The publisher fetches strictly before building, then freezes that snapshot for Docker.
 
@@ -103,3 +103,5 @@ CI additionally builds and runs the actual production container. Browser review 
 ## Rights
 
 No open-source license has been assigned. The portrait and personal writing remain the owner's content. Bundled font packages retain their own license notices in their package distributions.
+
+The npm manifest has `private: true` to prevent accidental npm publication; it does not control GitHub repository visibility.

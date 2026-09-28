@@ -63,4 +63,12 @@ GHCR publishing does not deploy the website. Configure your existing GitOps/imag
 - Manually dispatch `Release and refresh` again with an unchanged feed. Expect **Nothing changed**, no Docker build/push, and the same digest.
 - After the next new blog post, dispatch again (or wait for the schedule). Expect the same Git tag/release, a new content image, and the version alias pointing at it.
 
-At setup time GitHub reports that branch protection for this private repository requires a plan upgrade. The checks still run and the release script refuses missing/conflicting labels, but the current plan cannot enforce checks as merge requirements. When available, require `release-label` and `validate`, disallow direct main pushes, and protect `v*` tags against deletion or movement.
+## Public repository configuration
+
+After making the repository public, require `release-label` and `validate` on `main`, require a pull request before merging, and block force pushes and branch deletion. Tag protection must prevent moving/deleting `v*` tags while still allowing the release workflow to create them.
+
+Fork PRs run validation with read-only permissions and no publishing credentials. Release reconciliation dry-runs are restricted to branches in this repository; untrusted forks still run unit tests, the static build, and container checks. Keep GitHub's approval requirement for external contributors' workflows enabled. Checkout does not persist credentials in Git configuration.
+
+Repository visibility and GHCR package visibility are separate settings. If anonymous image pulls are wanted, set the package to public after its first publication and verify an unauthenticated pull. Otherwise, keep registry pull credentials on the deployment.
+
+Making a repository public also exposes its reachable commit history and Actions logs. Removing a file in a new commit does not remove old versions. Review those before changing visibility; this workflow does not rewrite history or change visibility automatically.
