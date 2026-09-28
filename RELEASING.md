@@ -6,7 +6,7 @@
 2. Add exactly one label: `major`, `minor`, or `patch`. Other labels are allowed. The label check reruns when labels change.
 3. Review `release-label` and `validate` checks before merging. Prefer squash merges (merge commits and rebase merges are also recognized through the GitHub merge SHA).
 4. `Release and refresh` validates the code, creates a lightweight Git tag and a published GitHub release at the PR merge SHA, and calls the publisher directly. No PAT is required.
-5. The publisher checks out that exact SHA, verifies the tag and ancestry, fetches RSS strictly, tests the production container, and publishes linux/amd64 and linux/arm64 images with provenance and SBOM attestations.
+5. A trusted main-branch job fetches RSS strictly from Ghost inside the cluster and passes the validated snapshot as an artifact. The publisher checks out the exact release SHA, verifies the tag and ancestry, tests the production container, and publishes linux/amd64 and linux/arm64 images with provenance and SBOM attestations.
 
 Starting point is `v0.0.0`: the first `minor` release is `v0.1.0`, first `major` is `v1.0.0`. `package.json` is a private build-tool manifest; Git release tags are the authority for product versions. Patch increments reset nothing; minor resets patch; major resets minor and patch.
 
@@ -53,7 +53,7 @@ Unchanged articles intentionally do not pull fresh base images. Dependency/base-
 
 ## Hosting and rollout
 
-GHCR publishing does not deploy the website. Configure your existing GitOps/image updater to detect changes to the version alias's **digest** and update the workload to the new digest. `imagePullPolicy: Always` only checks on pod startup. A running pod is not restarted when a registry tag changes. Roll back using a previous immutable tag or digest, not the mutable version alias.
+After publication, the latest stable release calls the existing `homelab-ops` version updater with the verified tag and digest. Argo CD deploys the committed digest. This updater also runs after an unchanged-image check to recover a prior failed GitOps update; identical values produce no commit or rollout. Older releases never update the live deployment. See [DEPLOYMENT.md](DEPLOYMENT.md) for bootstrap order and required App secrets. Roll back using a previous digest, not the mutable version alias.
 
 ## First PR acceptance test
 
@@ -67,7 +67,7 @@ GHCR publishing does not deploy the website. Configure your existing GitOps/imag
 
 After making the repository public, require `release-label` and `validate` on `main`, require a pull request before merging, and block force pushes and branch deletion. Tag protection must prevent moving/deleting `v*` tags while still allowing the release workflow to create them.
 
-Fork PRs run validation with read-only permissions and no publishing credentials. Release reconciliation dry-runs are restricted to branches in this repository; untrusted forks still run unit tests, the static build, and container checks. Keep GitHub's approval requirement for external contributors' workflows enabled. Checkout does not persist credentials in Git configuration.
+All jobs use the dedicated ARC runner. PR validation only runs for same-repository branches, with read-only permissions and no publishing credentials. External fork jobs are skipped; reviewed contributions can be imported into a maintainer branch. Keep approval for **all external contributors** enabled and review workflow changes before approving a run, since a fork can propose its own runner selection. Checkout in this repository does not persist credentials in Git configuration.
 
 Repository visibility and GHCR package visibility are separate settings. If anonymous image pulls are wanted, set the package to public after its first publication and verify an unauthenticated pull. Otherwise, keep registry pull credentials on the deployment.
 

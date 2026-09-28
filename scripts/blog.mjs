@@ -5,6 +5,7 @@ import { readFile, writeFile, appendFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
 export const FEED = "https://harish2k01.in/rss/";
+export const INTERNAL_FEED = "http://ghost.ghost.svc.cluster.local:2368/rss/";
 export const SNAPSHOT = "src/data/blog.json";
 const LIMIT = 2 * 1024 * 1024;
 
@@ -83,16 +84,31 @@ export function contentHash(snapshot) {
     .digest("hex");
 }
 
-export async function fetchFeed(fetcher = fetch) {
-  const response = await fetcher(FEED, {
+export async function fetchFeed(fetcher = fetch, feedUrl = FEED) {
+  const endpoint = new URL(feedUrl);
+  if (
+    !["http:", "https:"].includes(endpoint.protocol) ||
+    endpoint.username ||
+    endpoint.password
+  )
+    throw new Error("RSS endpoint must be an HTTP(S) URL without credentials");
+  const response = await fetcher(endpoint.href, {
     signal: AbortSignal.timeout(15_000),
     headers: {
       Accept: "application/rss+xml, application/xml, text/xml",
       "User-Agent": "HarishPortfolio/1.0",
+      // Ghost enforces its HTTPS canonical URL. This trusted direct-origin
+      // request supplies the same headers as the in-cluster TLS proxy.
+      ...(endpoint.href === INTERNAL_FEED
+        ? { Host: "harish2k01.in", "X-Forwarded-Proto": "https" }
+        : {}),
     },
     redirect: "error",
   });
-  if (!response.ok) throw new Error(`RSS request failed: ${response.status}`);
+  if (!response.ok)
+    throw new Error(
+      `RSS request failed: ${response.status}${response.status === 403 ? ". This runner cannot access the feed. Use the trusted in-cluster RSS job; do not publish a stale fallback." : ""}`,
+    );
   let size = 0;
   const chunks = [];
   for await (const chunk of response.body) {
@@ -108,6 +124,7 @@ export async function refresh({
   offline = false,
   file = SNAPSHOT,
   fetcher = fetch,
+  feedUrl = FEED,
 } = {}) {
   let snapshot;
   if (offline)
@@ -116,7 +133,7 @@ export async function refresh({
     );
   else {
     try {
-      snapshot = await fetchFeed(fetcher);
+      snapshot = await fetchFeed(fetcher, feedUrl);
     } catch (error) {
       if (strict) throw error;
       console.warn(
@@ -138,6 +155,7 @@ if (
   const { hash } = await refresh({
     strict: process.argv.includes("--strict"),
     offline: process.env.BLOG_MODE === "snapshot",
+    feedUrl: process.env.PORTFOLIO_RSS_URL || FEED,
   });
   console.log(`Latest three articles: ${hash}`);
   if (process.env.GITHUB_OUTPUT)

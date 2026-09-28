@@ -17,7 +17,7 @@ concurrency:
 jobs:
   release:
     if: github.ref == 'refs/heads/main' || github.event_name == 'release'
-    runs-on: ubuntu-latest
+    runs-on: portfolio-next-runner
     permissions:
       contents: write
       pull-requests: read
@@ -53,8 +53,35 @@ jobs:
         with:
           name: release-plan
           path: release-plan.json
-  publish:
+  articles:
     needs: release
+    if: needs.release.outputs.targets != '[]'
+    # Trusted main only. Fetch public RSS directly from Ghost, without edge filtering.
+    runs-on: portfolio-next-runner
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: npm ci --ignore-scripts
+      - name: Fetch and validate RSS from Ghost inside the cluster
+        run: npm run blog:refresh
+        env:
+          PORTFOLIO_RSS_URL: http://ghost.ghost.svc.cluster.local:2368/rss/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-blog-${{ github.run_id }}-${{ github.run_attempt }}
+          path: src/data/blog.json
+          retention-days: 1
+          if-no-files-found: error
+  publish:
+    needs: [release, articles]
     if: needs.release.outputs.targets != '[]'
     permissions:
       contents: write
@@ -68,3 +95,7 @@ jobs:
     with:
       tag: ${{ matrix.target.tag }}
       sha: ${{ matrix.target.sha }}
+      blog_artifact: portfolio-blog-${{ github.run_id }}-${{ github.run_attempt }}
+    secrets:
+      GH_APP_ID: ${{ secrets.GH_APP_ID }}
+      GH_APP_PRIVATE_KEY: ${{ secrets.GH_APP_PRIVATE_KEY }}

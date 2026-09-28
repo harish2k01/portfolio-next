@@ -111,6 +111,41 @@ test("HTTP errors do not turn into an empty article list", async () => {
   );
 });
 
+test("trusted origin fetch keeps public article URLs and refuses a blocked feed", async () => {
+  const endpoint = "http://ghost.ghost.svc.cluster.local:2368/rss/";
+  const xml =
+    "<rss><channel>" +
+    items
+      .map(
+        (item) =>
+          `<item><title>${item.title}</title><link>${item.url}</link><pubDate>${item.date}</pubDate></item>`,
+      )
+      .join("") +
+    "</channel></rss>";
+  const snapshot = await fetchFeed(async (url, options) => {
+    assert.equal(url, endpoint);
+    assert.equal(options.redirect, "error");
+    assert.equal(options.headers.Host, "harish2k01.in");
+    assert.equal(options.headers["X-Forwarded-Proto"], "https");
+    return new Response(xml);
+  }, endpoint);
+  assert.equal(contentHash(snapshot), contentHash(normalizeArticles(items)));
+  await assert.rejects(
+    fetchFeed(async () => new Response("Forbidden", { status: 403 })),
+    /403.*in-cluster/,
+  );
+  for (const bad of [
+    "file:///etc/passwd",
+    "https://user:pass@harish2k01.in/rss/",
+  ])
+    await assert.rejects(
+      fetchFeed(() => {
+        throw new Error("must not fetch");
+      }, bad),
+      /HTTP\(S\)/,
+    );
+});
+
 test("same-day articles use publication time; invisible timestamp edits do not rebuild", () => {
   const sameDay = items.map((a, i) => ({
     ...a,
