@@ -143,7 +143,17 @@ import Icon from "./Icon.astro";
   .delorean-flight {
     animation:
       turn-columns 0.8s steps(8) infinite,
-      turn-rows 6.4s steps(8) infinite;
+      turn-rows 6.4s steps(8) infinite,
+      time-hover 6.4s ease-in-out infinite;
+  }
+  @keyframes time-hover {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
   }
   @keyframes turn-columns {
     to {
