@@ -28,8 +28,6 @@ const groups = [
 >
   <div class="container archive-page">
     <a
-      target="_blank"
-      rel="noopener noreferrer"
       class="quiet-link"
       href="/#work">← Back to projects</a
     ><header class="page-heading">
@@ -46,8 +44,8 @@ const groups = [
               <div>
                 <h3>
                   <a
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={project.detail ? undefined : "_blank"}
+                    rel={project.detail ? undefined : "noopener noreferrer"}
                     href={project.detail || project.repo}
                   >
                     {project.name} <Icon name="arrow" size={20} />
