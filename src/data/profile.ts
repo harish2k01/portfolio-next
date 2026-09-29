@@ -26,7 +26,8 @@ export const experience = [
     url: "https://workhall.com/",
     role: "Automation Engineer",
     date: "01 Feb 2024",
-    detail: "Worked on API, UI, and performance test automation.",
+    detail:
+      "Designed and built the performance testing framework from scratch, substantially improved the API automation framework, and worked on UI test automation.",
   },
   {
     company: "Workhall",
@@ -93,8 +94,17 @@ export const skills = [
     ],
   },
   {
-    title: "Observability & performance",
-    items: ["Prometheus", "Grafana", "Loki", "k6"],
+    title: "Observability & testing",
+    items: [
+      "Prometheus",
+      "Grafana",
+      "Loki",
+      "Tempo",
+      "OpenTelemetry",
+      "k6",
+      "REST API Automation",
+      "Robot Framework",
+    ],
   },
   {
     title: "Scripting & development",

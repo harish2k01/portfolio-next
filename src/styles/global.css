@@ -1010,9 +1010,9 @@ details[open] > summary svg {
   font-size: 0.75rem;
 }
 .skill-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -1021,9 +1021,11 @@ details[open] > summary svg {
   font-size: 1.05rem;
   font-weight: 500;
   line-height: 1.65;
-  padding: 10px 0;
+  padding: 12px 18px;
   color: var(--text);
-  border-bottom: 1px solid var(--line);
+  background: #101722;
+  border: 1px solid var(--line);
+  border-radius: 8px;
 }
 .latest-articles-heading {
   font-size: 1.1rem;
@@ -1174,7 +1176,7 @@ details[open] > summary svg {
   }
   .skill-list li {
     font-size: 1rem;
-    padding: 10px 0;
+    padding: 10px 14px;
   }
 }
 .contact-section {
