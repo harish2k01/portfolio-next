@@ -126,14 +126,9 @@ test("all existing portfolio projects and career milestones remain discoverable"
     "Workhall",
     "Vuram",
     "Vikaasa",
-    "01 Jul",
+    "01 Aug 2022",
     "2022",
   ]) {
-    // July internship is described in prose rather than as a separate role.
-    if (text === "01 Jul") {
-      assert.ok(all.includes("July 2022"));
-      continue;
-    }
     assert.ok(all.includes(text), `Missing source content: ${text}`);
   }
 });
