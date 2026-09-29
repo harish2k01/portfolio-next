@@ -8,6 +8,7 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/harish2k01/",
   blog: "https://harish2k01.in/",
   medium: "https://harish2k01.medium.com/",
+  fullTimeSince: "2022-08-01",
 };
 
 export const experience = [
@@ -18,15 +19,14 @@ export const experience = [
     date: "09 Mar 2026",
     current: true,
     detail:
-      "My next chapter: site reliability engineering, building on a background in automation and a hands-on interest in infrastructure, observability, and performance.",
+      "Focused on reliable infrastructure, observability, and performance as a Site Reliability Engineer.",
   },
   {
     company: "Workhall",
     url: "https://workhall.com/",
-    role: "Automation Engineer · Quality Engineering",
+    role: "Automation Engineer",
     date: "01 Feb 2024",
-    detail:
-      "Promoted into automation and quality engineering, continuing my work on understanding software behavior and improving engineering workflows.",
+    detail: "Worked on API, UI, and performance test automation.",
   },
   {
     company: "Workhall",
@@ -69,11 +69,12 @@ export const education = [
 
 export const skills = [
   {
-    title: "Infrastructure & containers",
+    title: "Cloud & infrastructure",
     items: [
+      "Azure",
+      "Azure Kubernetes Service (AKS)",
       "Kubernetes",
       "Docker",
-      "Helm",
       "Linux",
       "Talos Linux",
       "Proxmox",
@@ -81,22 +82,31 @@ export const skills = [
     ],
   },
   {
-    title: "CI/CD & automation",
-    items: ["Argo CD", "GitHub Actions", "Jenkins", "Git", "Python", "Bash"],
-  },
-  {
-    title: "Monitoring & testing",
+    title: "Delivery & GitOps",
     items: [
-      "Prometheus",
-      "Grafana",
-      "Loki",
-      "k6",
-      "Robot Framework",
-      "REST API automation",
+      "GitOps",
+      "Argo CD",
+      "Helm Charts",
+      "GitHub Actions",
+      "Jenkins",
+      "Git",
     ],
   },
   {
-    title: "Languages & web development",
-    items: ["JavaScript", "Java", "HTML", "CSS", "Bootstrap", "Tailwind CSS"],
+    title: "Observability & performance",
+    items: ["Prometheus", "Grafana", "Loki", "k6"],
+  },
+  {
+    title: "Scripting & development",
+    items: [
+      "Python",
+      "Bash",
+      "JavaScript",
+      "Java",
+      "HTML",
+      "CSS",
+      "Bootstrap",
+      "Tailwind CSS",
+    ],
   },
 ];
