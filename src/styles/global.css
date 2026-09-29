@@ -779,6 +779,15 @@ h3 {
 .journey-section .quiet-link {
   margin-top: 5px;
 }
+.experience-summary {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 22px 0 14px;
+}
+.experience-summary strong {
+  color: var(--accent);
+  font-weight: 600;
+}
 .timeline {
   padding-left: 27px;
   border-left: 1px solid var(--line);
@@ -988,7 +997,17 @@ details[open] > summary svg {
 }
 .skill-category h3 {
   font-size: 1.2rem;
-  margin-bottom: 20px;
+  margin: 0;
+}
+.skill-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+.skill-heading > span {
+  color: var(--accent);
+  font-size: 0.75rem;
 }
 .skill-list {
   display: flex;
@@ -999,14 +1018,14 @@ details[open] > summary svg {
   list-style: none;
 }
 .skill-list li {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 500;
-  line-height: 1.5;
-  padding: 9px 14px;
+  line-height: 1.65;
+  padding: 12px 18px;
   color: var(--text);
-  background: #182230;
-  border: 1px solid #2b3b51;
-  border-radius: 5px;
+  background: #101722;
+  border: 1px solid var(--line);
+  border-radius: 8px;
 }
 .latest-articles-heading {
   font-size: 1.1rem;
@@ -1156,8 +1175,8 @@ details[open] > summary svg {
     padding: 24px 20px;
   }
   .skill-list li {
-    font-size: 1rem;
-    padding: 8px 12px;
+    font-size: 0.95rem;
+    padding: 10px 14px;
   }
 }
 .contact-section {

@@ -6,8 +6,18 @@ import ProjectDiagram from "../components/ProjectDiagram.astro";
 import Contact from "../components/Contact.astro";
 import Lab from "../components/Lab.astro";
 import { profile, experience, education, skills } from "../data/profile";
-import { projects } from "../data/projects";
+import { projects, otherProjects } from "../data/projects";
 import blog from "../data/blog.json";
+const started = new Date(`${profile.fullTimeSince}T00:00:00Z`);
+const today = new Date();
+const anniversaryPending =
+  today.getUTCMonth() < started.getUTCMonth() ||
+  (today.getUTCMonth() === started.getUTCMonth() &&
+    today.getUTCDate() < started.getUTCDate());
+const experienceYears =
+  today.getUTCFullYear() -
+  started.getUTCFullYear() -
+  Number(anniversaryPending);
 ---
 
 <Layout>
@@ -21,23 +31,36 @@ import blog from "../data/blog.json";
       </h1><p class="hero-role">I make systems <span>make sense.</span></p><p
         class="hero-description"
       >
-        Site Reliability Engineer at <a href="https://nielseniq.com/"
-          >NielsenIQ</a
-        >.<br />Building reliable infrastructure, automating the repetitive, and
+        Site Reliability Engineer at <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://nielseniq.com/">NielsenIQ</a
+        >.<br />Building reliable infrastructure, improving deployments, and
         understanding what happens underneath.
       </p><div class="hero-actions">
-        <a class="button button-primary" href="#work"
-          >View my projects <Icon name="arrow" size={18} /></a
-        ><a class="quiet-link" href={profile.github}
-          ><Icon name="github" size={18} /> GitHub</a
-        ><a class="quiet-link" href={profile.linkedin}
-          ><Icon name="linkedin" size={18} /> LinkedIn</a
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button button-primary"
+          href="#work">View my projects <Icon name="arrow" size={18} /></a
+        ><a
+          target="_blank"
+          rel="noopener noreferrer"
+          class="quiet-link"
+          href={profile.github}><Icon name="github" size={18} /> GitHub</a
+        ><a
+          target="_blank"
+          rel="noopener noreferrer"
+          class="quiet-link"
+          href={profile.linkedin}><Icon name="linkedin" size={18} /> LinkedIn</a
         >
       </div>
     </div>
     <Portrait />
     <div class="hero-bottom">
       <span class="mono">Infrastructure. Intention. Iteration.</span><a
+        target="_blank"
+        rel="noopener noreferrer"
         href="#work"
         class="scroll-cue">Explore projects <span aria-hidden="true">↓</span></a
       >
@@ -56,10 +79,12 @@ import blog from "../data/blog.json";
     </div>
     <div class="project-list">
       {
-        projects.slice(0, 3).map((project, i) => (
+        projects.map((project, i) => (
           <article class="project-row">
             <>
               <a
+                target="_blank"
+                rel="noopener noreferrer"
                 class="project-visual-link"
                 href={`/projects/${project.slug}/`}
                 aria-label={`Explore ${project.name}`}
@@ -72,7 +97,11 @@ import blog from "../data/blog.json";
                     0{i + 1} <span>/ {project.category}</span>
                   </span>
                   <h3>
-                    <a href={`/projects/${project.slug}/`}>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`/projects/${project.slug}/`}
+                    >
                       {project.headline}
                       <Icon name="arrow" size={24} />
                     </a>
@@ -85,10 +114,19 @@ import blog from "../data/blog.json";
                   </ul>
                   <div class="project-actions">
                     <>
-                      <a href={`/projects/${project.slug}/`}>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`/projects/${project.slug}/`}
+                      >
                         Project details <span aria-hidden="true">→</span>
                       </a>
-                      <a class="repo-link" href={project.repo}>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="repo-link"
+                        href={project.repo}
+                      >
                         <Icon name="github" size={16} /> Source
                       </a>
                     </>
@@ -100,18 +138,14 @@ import blog from "../data/blog.json";
         ))
       }
     </div>
-    <a class="project-extra" href="/projects/grafana-dashboards/"
-      ><span class="extra-icon" aria-hidden="true">▥</span><div>
-        <span class="mono">OBSERVABILITY PROJECT</span><h3>
-          Grafana Monitoring Dashboards
-        </h3>
-      </div><Icon name="arrow" size={24} /></a
-    >
-    <a class="archive-link" href="/projects/"
-      >View all projects <span class="mono">11 PROJECTS</span><Icon
-        name="arrow"
-        size={20}
-      /></a
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      class="archive-link"
+      href="/projects/"
+      >View all projects <span class="mono"
+        >{projects.length + otherProjects.length} PROJECTS</span
+      ><Icon name="arrow" size={20} /></a
     >
   </section>
   <section
@@ -122,11 +156,16 @@ import blog from "../data/blog.json";
     <div class="section-heading">
       <p class="eyebrow">02 / CAREER TIMELINE</p><h2 id="journey-heading">
         Experience
-      </h2><p class="section-lead">
-        From software and quality engineering to site reliability. Each step
-        adds another way to understand a system.
-      </p><a class="quiet-link" href={profile.linkedin}
-        >View LinkedIn <Icon name="arrow" size={16} /></a
+      </h2><p class="experience-summary">
+        <strong>{experienceYears}+ years</strong> of professional experience
+      </p><p class="section-lead">
+        Focused on DevOps and site reliability: infrastructure, deployments, and
+        understanding systems in production.
+      </p><a
+        target="_blank"
+        rel="noopener noreferrer"
+        class="quiet-link"
+        href={profile.linkedin}>View LinkedIn <Icon name="arrow" size={16} /></a
       >
     </div>
     <div class="timeline">
@@ -143,7 +182,7 @@ import blog from "../data/blog.json";
                 )}
               </div>
               <h3>
-                <a href={item.url}>
+                <a target="_blank" rel="noopener noreferrer" href={item.url}>
                   {item.company}
                   <Icon name="arrow" size={16} />
                 </a>
@@ -162,7 +201,7 @@ import blog from "../data/blog.json";
                 <>
                   <span class="mono muted">{item.date}</span>
                   <h4>{item.title}</h4>
-                  <a href={item.url}>
+                  <a target="_blank" rel="noopener noreferrer" href={item.url}>
                     {item.place} <span aria-hidden="true">↗</span>
                   </a>
                 </>
@@ -185,18 +224,20 @@ import blog from "../data/blog.json";
         <p>
           I'm an engineer who likes understanding how things work, especially
           when they don't. My interests sit at the intersection of
-          infrastructure, automation, observability, and performance.
+          infrastructure, reliability, observability, and performance.
         </p><p>
           Outside work, I run self-hosted services and Kubernetes clusters in my
           homelab. It's a place to experiment with deployments, stateful
           workloads, networking, and recovery—and to learn from the parts that
           don't go to plan.
         </p><p>
-          I write down what I learn on <a href={profile.blog}
-            >Harish's Tech Bytes</a
+          I write down what I learn on <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={profile.blog}>Harish's Tech Bytes</a
           >, so the next person has a little less figuring out to do.
         </p><blockquote>
-          “If it works manually, automate it.<br />If it breaks, understand it.”
+          “Understand the system.<br />Make it more reliable.”
         </blockquote>
       </div>
     </div>
@@ -214,15 +255,22 @@ import blog from "../data/blog.json";
         </h2>
       </div>
       <p class="section-lead">
-        The technologies I use across infrastructure, automation, observability,
-        and software development.
+        The technologies I use to build infrastructure, deliver applications,
+        and understand how systems behave.
       </p>
     </div>
     <div class="skills-grid">
       {
-        skills.map((group) => (
+        skills.map((group, index) => (
           <div class="skill-category">
-            <h3>{group.title}</h3>
+            <div class="skill-heading">
+              <>
+                <span class="mono" aria-hidden="true">
+                  0{index + 1}
+                </span>
+                <h3>{group.title}</h3>
+              </>
+            </div>
             <ul class="skill-list">
               {group.items.map((skill) => (
                 <li>{skill}</li>
@@ -247,7 +295,7 @@ import blog from "../data/blog.json";
         </h2>
       </div>
       <p class="section-lead">
-        I share what I learn about Kubernetes, self-hosting, automation, and
+        I share what I learn about Kubernetes, self-hosting, observability, and
         troubleshooting. Find my articles on either platform.
       </p>
     </div>
@@ -255,7 +303,12 @@ import blog from "../data/blog.json";
     <div class="latest-articles">
       {
         blog.articles.map((article) => (
-          <a class="article-card" href={article.url}>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            class="article-card"
+            href={article.url}
+          >
             <time datetime={article.date}>
               {new Date(article.date + "T00:00:00Z").toLocaleDateString(
                 "en-GB",
@@ -276,7 +329,12 @@ import blog from "../data/blog.json";
       }
     </div>
     <div class="writing-platforms">
-      <a class="writing-platform" href={profile.blog}>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        class="writing-platform"
+        href={profile.blog}
+      >
         <span class="mono">PERSONAL BLOG</span>
         <h3>Harish’s Tech Bytes <Icon name="arrow" size={24} /></h3>
         <p>
@@ -287,7 +345,12 @@ import blog from "../data/blog.json";
           >Read Tech Bytes <span aria-hidden="true">↗</span></span
         >
       </a>
-      <a class="writing-platform" href={profile.medium}>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        class="writing-platform"
+        href={profile.medium}
+      >
         <span class="mono">MEDIUM</span>
         <h3>Harish on Medium <Icon name="arrow" size={24} /></h3>
         <p>More of my technical writing, collected on my Medium profile.</p>

@@ -8,6 +8,7 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/harish2k01/",
   blog: "https://harish2k01.in/",
   medium: "https://harish2k01.medium.com/",
+  fullTimeSince: "2022-08-01",
 };
 
 export const experience = [
@@ -18,15 +19,15 @@ export const experience = [
     date: "09 Mar 2026",
     current: true,
     detail:
-      "My next chapter: site reliability engineering, building on a background in automation and a hands-on interest in infrastructure, observability, and performance.",
+      "Primarily focused on DevOps—cloud infrastructure and application delivery—with site reliability work across observability and performance.",
   },
   {
     company: "Workhall",
     url: "https://workhall.com/",
-    role: "Automation Engineer · Quality Engineering",
+    role: "Automation Engineer",
     date: "01 Feb 2024",
     detail:
-      "Promoted into automation and quality engineering, continuing my work on understanding software behavior and improving engineering workflows.",
+      "Built automation framework solutions across API, UI, and performance engineering.",
   },
   {
     company: "Workhall",
@@ -34,7 +35,7 @@ export const experience = [
     role: "Associate Software Engineer",
     date: "01 Aug 2022",
     detail:
-      "Moved into a full-time software engineering role after continuing my internship at Workhall on 01 July 2022.",
+      "Moved into a full-time role after continuing my internship, primarily working on frontend and website design.",
   },
   {
     company: "Vuram",
@@ -69,11 +70,12 @@ export const education = [
 
 export const skills = [
   {
-    title: "Infrastructure & containers",
+    title: "Cloud & infrastructure",
     items: [
+      "Azure",
+      "Azure Kubernetes Service (AKS)",
       "Kubernetes",
       "Docker",
-      "Helm",
       "Linux",
       "Talos Linux",
       "Proxmox",
@@ -81,22 +83,40 @@ export const skills = [
     ],
   },
   {
-    title: "CI/CD & automation",
-    items: ["Argo CD", "GitHub Actions", "Jenkins", "Git", "Python", "Bash"],
+    title: "Delivery & GitOps",
+    items: [
+      "GitOps",
+      "Argo CD",
+      "Helm Charts",
+      "GitHub Actions",
+      "Jenkins",
+      "Git",
+    ],
   },
   {
-    title: "Monitoring & testing",
+    title: "Observability & testing",
     items: [
       "Prometheus",
       "Grafana",
       "Loki",
+      "Tempo",
+      "OpenTelemetry",
       "k6",
+      "REST API Automation",
       "Robot Framework",
-      "REST API automation",
     ],
   },
   {
-    title: "Languages & web development",
-    items: ["JavaScript", "Java", "HTML", "CSS", "Bootstrap", "Tailwind CSS"],
+    title: "Scripting & development",
+    items: [
+      "Python",
+      "Bash",
+      "JavaScript",
+      "Java",
+      "HTML",
+      "CSS",
+      "Bootstrap",
+      "Tailwind CSS",
+    ],
   },
 ];

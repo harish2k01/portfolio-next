@@ -17,12 +17,16 @@ import Icon from "./Icon.astro";
     </p>
   </div>
   <div class="contact-links">
-    <a class="email-link" href={`mailto:${profile.email}`}
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      class="email-link"
+      href={`mailto:${profile.email}`}
       >{profile.email}<Icon name="arrow" size={26} /></a
     ><div class="contact-secondary">
       <button class="copy-button" data-copy-email={profile.email}
         ><Icon name="copy" size={16} /> Copy email</button
-      ><a href={profile.linkedin}
+      ><a target="_blank" rel="noopener noreferrer" href={profile.linkedin}
         >Connect on LinkedIn <Icon name="arrow" size={16} /></a
       >
     </div><span

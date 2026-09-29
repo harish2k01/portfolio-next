@@ -27,7 +27,7 @@ npm run preview   # preview the production build
 - Canonical metadata, sitemap, robots.txt, custom favicon, and a real 404 document.
 - Docker, NGINX, Compose, PR-label semantic releases, and content-aware GHCR refreshes.
 
-There are no API credentials, live status counters, third-party font calls, analytics, external JavaScript, contact-form backend, or Sites hosting dependencies.
+There are no API credentials, live status counters, third-party font calls, contact-form backend, or Sites hosting dependencies. The shared layout loads a deferred Umami tracker from `umami.harish2k01.xyz`, limited to `harish2k01.xyz` so local previews do not record visits. This is the only external JavaScript; the local JavaScript budget excludes the separately loaded tracker.
 
 ## Edit the content
 

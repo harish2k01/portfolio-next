@@ -27,9 +27,12 @@ const groups = [
   description="Infrastructure, GitOps, observability, self-hosted applications, and earlier projects by Harish Thangadurai."
 >
   <div class="container archive-page">
-    <a class="quiet-link" href="/#work">← Back to projects</a><header
-      class="page-heading"
-    >
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      class="quiet-link"
+      href="/#work">← Back to projects</a
+    ><header class="page-heading">
       <p class="eyebrow">THE PROJECT ARCHIVE</p><h1>All projects</h1><p>
         Infrastructure, useful tools, and the projects that came before them.
       </p>
@@ -42,7 +45,11 @@ const groups = [
             <article class="archive-row">
               <div>
                 <h3>
-                  <a href={project.detail || project.repo}>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={project.detail || project.repo}
+                  >
                     {project.name} <Icon name="arrow" size={20} />
                   </a>
                 </h3>
@@ -54,6 +61,8 @@ const groups = [
                 </ul>
               </div>
               <a
+                target="_blank"
+                rel="noopener noreferrer"
                 class="archive-repo"
                 href={project.repo}
                 aria-label={`${project.name} source on GitHub`}

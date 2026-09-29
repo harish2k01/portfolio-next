@@ -98,6 +98,14 @@ export const projects: Project[] = [
 
 export const otherProjects = [
   {
+    name: "Portfolio Next",
+    category: "Self-hosted applications",
+    description:
+      "This portfolio, built with Astro and deployed to Kubernetes through Helm and Argo CD. Tagged releases publish multi-platform images to GHCR; daily article checks rebuild only when content changes and roll out the new image by digest.",
+    tags: ["Astro", "GitHub Actions", "GHCR", "Helm", "Argo CD"],
+    repo: "https://github.com/harish2k01/portfolio-next",
+  },
+  {
     name: "PaperVault",
     category: "Self-hosted applications",
     description:

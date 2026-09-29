@@ -85,9 +85,32 @@ test("the static site stays small and does not hydrate a framework", async () =>
       !html.includes("<astro-island"),
       "Unexpected client framework hydration",
     );
+    const externalScripts = [
+      ...html.matchAll(/<script\b[^>]*\bsrc="https?:[^>]*>/g),
+    ].map((match) => match[0]);
+    assert.equal(
+      externalScripts.length,
+      1,
+      "Only the approved Umami tracker should be external",
+    );
+    const tracker = externalScripts[0];
+    assert.equal(
+      attrs(tracker, "src")[0],
+      "https://umami.harish2k01.xyz/script.js",
+    );
+    assert.equal(
+      attrs(tracker, "data-website-id")[0],
+      "674d53a6-4ee7-4806-add2-b53dd17d2f6c",
+    );
+    assert.equal(
+      attrs(tracker, "data-domains")[0],
+      "harish2k01.xyz",
+      "Local previews must not send pageviews",
+    );
+    assert.match(tracker, /\sdefer(?:\s|>|=)/);
     assert.ok(
-      !/<script[^>]+src="https?:/.test(html),
-      "Unexpected external script",
+      html.indexOf(tracker) < html.indexOf("</head>"),
+      "Tracker belongs in the shared document head",
     );
   }
 });
@@ -103,14 +126,9 @@ test("all existing portfolio projects and career milestones remain discoverable"
     "Workhall",
     "Vuram",
     "Vikaasa",
-    "01 Jul",
+    "01 Aug 2022",
     "2022",
   ]) {
-    // July internship is described in prose rather than as a separate role.
-    if (text === "01 Jul") {
-      assert.ok(all.includes("July 2022"));
-      continue;
-    }
     assert.ok(all.includes(text), `Missing source content: ${text}`);
   }
 });

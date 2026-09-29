@@ -12,7 +12,7 @@ interface Props {
 }
 const {
   title = "Harish Thangadurai — Site Reliability Engineer",
-  description = "Site Reliability Engineer at NielsenIQ. Kubernetes, GitOps, observability, automation, and lessons from a hands-on homelab.",
+  description = "Site Reliability Engineer at NielsenIQ. Azure, Kubernetes, GitOps, observability, and lessons from a hands-on homelab.",
   noindex = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -53,12 +53,23 @@ const nav = [
       content={title}
     /><meta name="twitter:description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
+    <script
+      is:inline
+      defer
+      src="https://umami.harish2k01.xyz/script.js"
+      data-website-id="674d53a6-4ee7-4806-add2-b53dd17d2f6c"
+      data-domains="harish2k01.xyz"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="container header-inner">
-        <a href="/" class="brand" aria-label="Harish — home"
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="/"
+          class="brand"
+          aria-label="Harish — home"
           ><span class="brand-symbol" aria-hidden="true">h<span>:</span></span
           ><span class="brand-name"
             >harish<span class="muted"> / </span><span class="mono">sre</span
@@ -68,13 +79,21 @@ const nav = [
         <nav aria-label="Main navigation" id="navigation" class="navigation">
           {
             nav.map(([label, id]) => (
-              <a href={`${onHome ? "" : "/"}#${id}`} data-section={id}>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`${onHome ? "" : "/"}#${id}`}
+                data-section={id}
+              >
                 {label}
               </a>
             ))
           }
-          <a href={`${onHome ? "" : "/"}#contact`} class="nav-contact"
-            >Contact <Icon name="arrow" size={16} /></a
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`${onHome ? "" : "/"}#contact`}
+            class="nav-contact">Contact <Icon name="arrow" size={16} /></a
           >
         </nav>
         <button
@@ -88,16 +107,36 @@ const nav = [
     </header>
     <main id="main"><slot /></main>
     <footer class="container site-footer">
-      <a href="/" class="footer-signature">harish<span>_</span></a><span
-        class="footer-note">Built with care. Always a work in progress.</span
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="/"
+        class="footer-signature">harish<span>_</span></a
+      ><span class="footer-note"
+        >Built with care. Always a work in progress.</span
       ><div>
-        <a href={profile.github} aria-label="Harish on GitHub"
-          ><Icon name="github" size={19} /></a
-        ><a href={profile.linkedin} aria-label="Harish on LinkedIn"
-          ><Icon name="linkedin" size={19} /></a
-        ><a href={`mailto:${profile.email}`} aria-label="Email Harish"
-          ><Icon name="mail" size={19} /></a
-        ><a class="back-top" href="#main" aria-label="Back to top">↑</a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={profile.github}
+          aria-label="Harish on GitHub"><Icon name="github" size={19} /></a
+        ><a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={profile.linkedin}
+          aria-label="Harish on LinkedIn"><Icon name="linkedin" size={19} /></a
+        ><a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`mailto:${profile.email}`}
+          aria-label="Email Harish"><Icon name="mail" size={19} /></a
+        ><a
+          target="_blank"
+          rel="noopener noreferrer"
+          class="back-top"
+          href="#main"
+          aria-label="Back to top">↑</a
+        >
       </div>
     </footer>
     <TimeMachine />
@@ -202,7 +241,8 @@ const nav = [
         (entries) => {
           let index = 0;
           for (const entry of entries) {
-            if (!entry.isIntersecting || entry.intersectionRatio < 0.12) continue;
+            if (!entry.isIntersecting || entry.intersectionRatio < 0.12)
+              continue;
             show(
               entry.target as HTMLElement,
               true,
