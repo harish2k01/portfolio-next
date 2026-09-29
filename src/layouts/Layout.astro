@@ -65,8 +65,6 @@ const nav = [
     <header class="site-header">
       <div class="container header-inner">
         <a
-          target="_blank"
-          rel="noopener noreferrer"
           href="/"
           class="brand"
           aria-label="Harish — home"
@@ -80,8 +78,6 @@ const nav = [
           {
             nav.map(([label, id]) => (
               <a
-                target="_blank"
-                rel="noopener noreferrer"
                 href={`${onHome ? "" : "/"}#${id}`}
                 data-section={id}
               >
@@ -90,8 +86,6 @@ const nav = [
             ))
           }
           <a
-            target="_blank"
-            rel="noopener noreferrer"
             href={`${onHome ? "" : "/"}#contact`}
             class="nav-contact">Contact <Icon name="arrow" size={16} /></a
           >
@@ -108,8 +102,6 @@ const nav = [
     <main id="main"><slot /></main>
     <footer class="container site-footer">
       <a
-        target="_blank"
-        rel="noopener noreferrer"
         href="/"
         class="footer-signature">harish<span>_</span></a
       ><span class="footer-note"
@@ -131,8 +123,6 @@ const nav = [
           href={`mailto:${profile.email}`}
           aria-label="Email Harish"><Icon name="mail" size={19} /></a
         ><a
-          target="_blank"
-          rel="noopener noreferrer"
           class="back-top"
           href="#main"
           aria-label="Back to top">↑</a
