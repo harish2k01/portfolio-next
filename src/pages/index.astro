@@ -5,7 +5,13 @@ import Portrait from "../components/Portrait.astro";
 import ProjectDiagram from "../components/ProjectDiagram.astro";
 import Contact from "../components/Contact.astro";
 import Lab from "../components/Lab.astro";
-import { profile, experience, education, skills } from "../data/profile";
+import {
+  profile,
+  experience,
+  education,
+  skills,
+  earlierSkills,
+} from "../data/profile";
 import { projects, otherProjects } from "../data/projects";
 import blog from "../data/blog.json";
 const started = new Date(`${profile.fullTimeSince}T00:00:00Z`);
@@ -159,8 +165,8 @@ const experienceYears =
       </h2><p class="experience-summary">
         <strong>{experienceYears}+ years</strong> of professional experience
       </p><p class="section-lead">
-        Focused on DevOps and site reliability: infrastructure, deployments, and
-        understanding systems in production.
+        My work centres on repeatable deployments, maintainable infrastructure,
+        and understanding system behaviour when something goes wrong.
       </p><a
         target="_blank"
         rel="noopener noreferrer"
@@ -280,6 +286,12 @@ const experienceYears =
         ))
       }
     </div>
+    <div class="skill-category earlier-skills">
+      <h3>Earlier development background</h3>
+      <ul class="skill-list">
+        {earlierSkills.map((skill) => <li>{skill}</li>)}
+      </ul>
+    </div>
   </section>
   <section
     id="writing"
@@ -295,8 +307,8 @@ const experienceYears =
         </h2>
       </div>
       <p class="section-lead">
-        I share what I learn about Kubernetes, self-hosting, observability, and
-        troubleshooting. Find my articles on either platform.
+        Notes from building, running, and troubleshooting the systems I work
+        with.
       </p>
     </div>
     <h3 class="latest-articles-heading">Latest articles</h3>
@@ -322,41 +334,29 @@ const experienceYears =
             </time>
             <h4>{article.title}</h4>
             <span>
-              Read on Tech Bytes <Icon name="arrow" size={18} />
+              Read article <Icon name="arrow" size={18} />
             </span>
           </a>
         ))
       }
     </div>
-    <div class="writing-platforms">
+    <div class="writing-links">
+      <span class="muted">More writing</span>
       <a
         target="_blank"
         rel="noopener noreferrer"
-        class="writing-platform"
+        class="quiet-link"
         href={profile.blog}
       >
-        <span class="mono">PERSONAL BLOG</span>
-        <h3>Harish’s Tech Bytes <Icon name="arrow" size={24} /></h3>
-        <p>
-          Practical guides and notes from my engineering work and homelab
-          experiments.
-        </p>
-        <span class="platform-link"
-          >Read on Tech Bytes <span aria-hidden="true">↗</span></span
-        >
+        Harish’s Tech Bytes <Icon name="arrow" size={18} />
       </a>
       <a
         target="_blank"
         rel="noopener noreferrer"
-        class="writing-platform"
+        class="quiet-link"
         href={profile.medium}
       >
-        <span class="mono">MEDIUM</span>
-        <h3>Harish on Medium <Icon name="arrow" size={24} /></h3>
-        <p>More of my technical writing, collected on my Medium profile.</p>
-        <span class="platform-link"
-          >Read on Medium <span aria-hidden="true">↗</span></span
-        >
+        Medium <Icon name="arrow" size={18} />
       </a>
     </div>
   </section>

@@ -258,7 +258,7 @@ const nav = [
       if (!motion.matches && typeof Element.prototype.animate === "function")
         document
           .querySelectorAll<HTMLElement>(
-            ".section-heading, .project-visual-link, .project-copy, .timeline-item, .about-copy, .skill-category, .homelab-step, .article-card, .writing-platform, .contact-section > div",
+            ".section-heading, .project-visual-link, .project-copy, .timeline-item, .about-copy, .skill-category, .homelab-step, .article-card, .contact-section > div",
           )
           .forEach((element) => {
             pending.add(element);
