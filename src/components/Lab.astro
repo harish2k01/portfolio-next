@@ -3,29 +3,31 @@ import Icon from "./Icon.astro";
 const activities = [
   {
     icon: "server" as const,
-    title: "Run applications",
+    title: "Run",
     text: "I use Proxmox, Talos Linux, and Kubernetes to run self-hosted services, with Longhorn for persistent storage.",
   },
   {
     icon: "deploy" as const,
-    title: "Automate deployments",
+    title: "Deploy",
     text: "GitHub Actions builds container images. Helm packages applications, and Argo CD keeps the cluster in sync with Git.",
   },
   {
     icon: "activity" as const,
-    title: "Monitor & troubleshoot",
+    title: "Observe",
     text: "Prometheus and Grafana show metrics and dashboards. Loki and Alloy collect logs to help investigate problems.",
+  },
+  {
+    icon: "code" as const,
+    title: "Experiment",
+    text: "I try new tools, explore stateful workloads and networking, and practise recovery when things don’t go to plan.",
   },
 ];
 ---
 
 <aside class="homelab-overview" aria-labelledby="homelab-heading">
   <div class="homelab-intro">
-    <h3 id="homelab-heading">My homelab, in practice</h3>
-    <p>
-      My homelab is a personal server environment where I put ideas into
-      practice. Here’s what I do with it.
-    </p>
+    <h3 id="homelab-heading">Putting that curiosity into practice</h3>
+    <p>My homelab is where I explore these ideas hands-on.</p>
   </div>
   <ol class="homelab-activities">
     {
