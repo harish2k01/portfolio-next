@@ -895,7 +895,10 @@ details[open] > summary svg {
 .about-layout {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
-  gap: 80px;
+  gap: 38px 80px;
+}
+.about-content {
+  min-width: 0;
 }
 .about-copy > p {
   font-size: 0.975rem;
@@ -918,9 +921,7 @@ details[open] > summary svg {
 }
 /* Clear, readable supporting content without hidden panels. */
 .homelab-overview {
-  margin-top: 64px;
-  padding-top: 40px;
-  border-top: 1px solid var(--line);
+  grid-column: 1 / -1;
 }
 .homelab-intro {
   max-width: 780px;
@@ -935,28 +936,18 @@ details[open] > summary svg {
 }
 .homelab-activities {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 40px;
-  margin: 34px 0 28px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 56px;
+  margin: 28px 0;
   padding: 0;
   list-style: none;
 }
 .homelab-step {
   position: relative;
   min-width: 0;
-}
-.homelab-step:not(:last-child)::after {
-  content: "→";
-  position: absolute;
-  top: 23px;
-  left: 78px;
-  right: -18px;
-  height: 1px;
-  background: var(--line);
-  color: var(--accent);
-  font-size: 18px;
-  line-height: 0;
-  text-align: right;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 22px;
 }
 .homelab-node {
   position: relative;
@@ -967,7 +958,6 @@ details[open] > summary svg {
   color: var(--accent);
   display: grid;
   place-items: center;
-  margin-bottom: 22px;
 }
 .homelab-node > span {
   position: absolute;
@@ -1031,43 +1021,58 @@ details[open] > summary svg {
   font-size: 1.1rem;
   margin: 0 0 22px;
 }
+.earlier-skills {
+  margin-top: 38px;
+}
+.earlier-skills h3 {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+.earlier-skills .skill-list li {
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 7px 12px;
+}
 .latest-articles {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
-  margin-bottom: 38px;
+  border-bottom: 1px solid var(--line);
 }
 .article-card {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 145px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 36px;
   border-top: 1px solid var(--line);
-  padding: 24px 0;
-  transition:
-    border-color 0.2s,
-    transform 0.2s;
+  padding: 32px 0;
 }
 .article-card time {
   color: var(--muted);
   font: 0.8rem var(--mono);
 }
 .article-card h4 {
-  margin: 16px 0 24px;
-  font-size: 1.15rem;
-  line-height: 1.6;
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.45;
   font-weight: 600;
+  transition: color 0.2s;
 }
 .article-card > span {
   display: flex;
   align-items: center;
   gap: 12px;
   color: var(--accent);
-  margin-top: auto;
   font-size: 0.9rem;
+  white-space: nowrap;
+}
+.article-card > span svg {
+  transition: transform 0.2s;
+}
+.article-card:is(:hover, :focus-visible) h4 {
+  color: var(--accent);
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .article-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--accent);
+  .article-card:hover > span svg {
+    transform: translate(3px, -3px);
   }
   .button {
     transition:
@@ -1092,87 +1097,39 @@ details[open] > summary svg {
   }
 }
 @media (max-width: 760px) {
-  .latest-articles {
+  .article-card {
     grid-template-columns: 1fr;
-    gap: 0;
+    gap: 14px;
+    padding: 26px 0;
+  }
+  .article-card h4 {
+    font-size: 1.2rem;
   }
 }
-.writing-platforms {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
-}
-.writing-platform {
+.writing-links {
   display: flex;
-  flex-direction: column;
-  padding: 30px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #101722;
-  transition: border-color 0.2s;
-}
-.writing-platform:hover {
-  border-color: var(--accent);
-}
-.writing-platform > .mono {
-  font-size: 0.75rem;
-  color: var(--accent);
-}
-.writing-platform h3 {
-  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 16px 0 0;
-  font-size: 1.4rem;
-}
-.writing-platform h3 svg {
-  flex-shrink: 0;
-  color: var(--accent);
-}
-.writing-platform p {
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.85;
-  margin: 14px 0 24px;
-}
-.platform-link {
-  margin-top: auto;
-  color: var(--accent);
-  font-size: 0.95rem;
+  gap: 14px 28px;
+  margin-top: 26px;
+  font-size: 0.9rem;
 }
 @media (max-width: 760px) {
-  .homelab-overview {
-    padding-top: 30px;
-    margin-top: 40px;
-  }
-  .homelab-activities,
-  .skills-grid,
-  .writing-platforms {
-    grid-template-columns: 1fr;
-  }
   .homelab-activities {
+    grid-template-columns: 1fr;
     gap: 30px;
-  }
-  .homelab-step {
-    display: grid;
-    grid-template-columns: 48px minmax(0, 1fr);
-    gap: 22px;
-  }
-  .homelab-node {
-    margin: 0;
   }
   .homelab-step:not(:last-child)::after {
     content: "";
+    position: absolute;
     top: 65px;
     bottom: -13px;
     left: 23px;
-    right: auto;
     width: 1px;
-    height: auto;
+    background: var(--line);
   }
-  .writing-platform {
-    padding: 24px 20px;
+  .skills-grid {
+    grid-template-columns: 1fr;
   }
   .skill-list li {
     font-size: 0.95rem;

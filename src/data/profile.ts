@@ -94,29 +94,23 @@ export const skills = [
     ],
   },
   {
-    title: "Observability & testing",
-    items: [
-      "Prometheus",
-      "Grafana",
-      "Loki",
-      "Tempo",
-      "OpenTelemetry",
-      "k6",
-      "REST API Automation",
-      "Robot Framework",
-    ],
+    title: "Observability",
+    items: ["Prometheus", "Grafana", "Loki", "Tempo", "OpenTelemetry"],
   },
   {
-    title: "Scripting & development",
-    items: [
-      "Python",
-      "Bash",
-      "JavaScript",
-      "Java",
-      "HTML",
-      "CSS",
-      "Bootstrap",
-      "Tailwind CSS",
-    ],
+    title: "Scripting",
+    items: ["Python", "Bash"],
   },
+];
+
+export const earlierSkills = [
+  "REST API Automation",
+  "k6",
+  "Robot Framework",
+  "JavaScript",
+  "Java",
+  "HTML",
+  "CSS",
+  "Bootstrap",
+  "Tailwind CSS",
 ];
