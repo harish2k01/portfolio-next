@@ -19,7 +19,7 @@ export const experience = [
     date: "09 Mar 2026",
     current: true,
     detail:
-      "Focused on reliable infrastructure, observability, and performance as a Site Reliability Engineer.",
+      "Primarily focused on DevOps—cloud infrastructure and application delivery—with site reliability work across observability and performance.",
   },
   {
     company: "Workhall",
@@ -27,7 +27,7 @@ export const experience = [
     role: "Automation Engineer",
     date: "01 Feb 2024",
     detail:
-      "Designed and built the performance testing framework from scratch, substantially improved the API automation framework, and worked on UI test automation.",
+      "Built automation framework solutions across API, UI, and performance engineering.",
   },
   {
     company: "Workhall",
@@ -35,7 +35,7 @@ export const experience = [
     role: "Associate Software Engineer",
     date: "01 Aug 2022",
     detail:
-      "Moved into a full-time software engineering role after continuing my internship at Workhall on 01 July 2022.",
+      "Moved into a full-time role after continuing my internship, primarily working on frontend and website design.",
   },
   {
     company: "Vuram",
