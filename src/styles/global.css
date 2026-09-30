@@ -1043,7 +1043,7 @@ details[open] > summary svg {
   align-items: center;
   gap: 36px;
   border-top: 1px solid var(--line);
-  padding: 32px 0;
+  padding: 26px 0;
 }
 .article-card time {
   color: var(--muted);
@@ -1051,9 +1051,9 @@ details[open] > summary svg {
 }
 .article-card h4 {
   margin: 0;
-  font-size: 1.45rem;
-  line-height: 1.45;
-  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  font-weight: 500;
   transition: color 0.2s;
 }
 .article-card > span {
@@ -1103,7 +1103,7 @@ details[open] > summary svg {
     padding: 26px 0;
   }
   .article-card h4 {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
   }
 }
 .writing-links {
