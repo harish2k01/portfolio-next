@@ -45,30 +45,27 @@ For release `v0.1.0`, source commit `COMMIT`, and normalized content SHA-256 `HA
 | `:sha-COMMIT-blog-HASH` | Immutable full source SHA + article-content alias                   |
 | `@sha256:DIGEST`        | Exact OCI image index, recommended for deployment/rollback          |
 
-The version alias is intentionally mutable to meet the daily-refresh requirement. A bare source SHA is not a complete image identity because external article content can change independently. Git tags never move. Immutable content tags are reused, not overwritten. All tags use the same image digest; tagging an existing image is not a rebuild.
+The version alias tracks the latest article snapshot for that release. A bare source SHA is not a complete image identity because external article content can change independently. Git tags never move. Immutable content tags are reused, not overwritten. Aliases for the same content image share its digest; tagging an existing image is not a rebuild.
 
 OCI labels include source repository, release URL, version, full source SHA, description, and `io.harish.portfolio.blog-sha256`. Build attestations record build provenance and package inventory. The release assets `image.json` and `blog.json` record the latest published digest and exact article snapshot. Older content snapshots remain available through their immutable images. Keep immutable tags/digests used by deployments or rollback; no automatic deletion is configured.
 
-Unchanged articles intentionally do not pull fresh base images. Dependency/base-image updates should use a reviewed patch PR; otherwise a routine daily build would defeat the no-change requirement.
+Unchanged articles do not pull fresh base images. Dependency and base-image updates use reviewed PRs so they can be validated and released independently of article refreshes.
 
 ## Hosting and rollout
 
-After publication, the latest stable release calls the existing `homelab-ops` version updater with the verified tag and digest. Argo CD deploys the committed digest. This updater also runs after an unchanged-image check to recover a prior failed GitOps update; identical values produce no commit or rollout. Older releases never update the live deployment. See [DEPLOYMENT.md](DEPLOYMENT.md) for bootstrap order and required App secrets. Roll back using a previous digest, not the mutable version alias.
+After publication, the latest stable release calls the `homelab-ops` version updater with the verified tag and digest. Argo CD deploys the committed digest. This updater also runs after an unchanged-image check to recover a prior failed GitOps update; identical values produce no commit or rollout. Older releases never update the live deployment. See [DEPLOYMENT.md](DEPLOYMENT.md) for workflow configuration and required App secrets. Roll back using a previous digest, not the mutable version alias.
 
-## First PR acceptance test
+## Release verification
 
-- The PR should carry `minor`; validation includes feed normalization/failure cases, SemVer increments, queued-merge reconciliation, image skip/reuse/build decisions, and Docker HTTP routing.
-- GitHub Actions write paths do not execute in PR checks. The first real release and GHCR publish require merging this PR to main; no release is created just by opening it.
-- After merge, verify `v0.1.0`, its generated release notes, `image.json` / `blog.json`, and the GHCR immutable/version/SHA-content tags.
+- PR validation covers feed normalization and failures, SemVer increments, queued-merge reconciliation, image skip/reuse/build decisions, and Docker HTTP routing. PR checks do not publish images or create releases.
+- After a merge, verify the new semantic version, generated release notes, `image.json` / `blog.json`, and GHCR immutable/version/SHA-content tags.
 - Manually dispatch `Release and refresh` again with an unchanged feed. Expect **Nothing changed**, no Docker build/push, and the same digest.
 - After the next new blog post, dispatch again (or wait for the schedule). Expect the same Git tag/release, a new content image, and the version alias pointing at it.
 
-## Public repository configuration
+## Repository configuration
 
-After making the repository public, require `release-label` and `validate` on `main`, require a pull request before merging, and block force pushes and branch deletion. Tag protection must prevent moving/deleting `v*` tags while still allowing the release workflow to create them.
+Recommended branch protection requires `release-label` and `validate` on pull requests to `main`, requires a pull request before merging, and blocks force pushes and branch deletion. Tag protection should prevent moving/deleting `v*` tags while allowing the release workflow to create them. These settings are managed in GitHub, separately from the checked-in workflows.
 
 All jobs use the dedicated ARC runner. PR validation only runs for same-repository branches, with read-only permissions and no publishing credentials. External fork jobs are skipped; reviewed contributions can be imported into a maintainer branch. Keep approval for **all external contributors** enabled and review workflow changes before approving a run, since a fork can propose its own runner selection. Checkout in this repository does not persist credentials in Git configuration.
 
-Repository visibility and GHCR package visibility are separate settings. If anonymous image pulls are wanted, set the package to public after its first publication and verify an unauthenticated pull. Otherwise, keep registry pull credentials on the deployment.
-
-Making a repository public also exposes its reachable commit history and Actions logs. Removing a file in a new commit does not remove old versions. Review those before changing visibility; this workflow does not rewrite history or change visibility automatically.
+Repository visibility and GHCR package visibility are separate settings. Public packages support anonymous image pulls; private packages require registry pull credentials on the deployment.

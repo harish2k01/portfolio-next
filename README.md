@@ -2,6 +2,8 @@
 
 A personal portfolio for Harish Thangadurai, Site Reliability Engineer at NielsenIQ. Built from scratch with Astro, TypeScript, and custom CSS. Fully static output, locally served fonts, an optimized portrait, and a small amount of framework-free JavaScript.
 
+[Visit the portfolio](https://harish2k01.xyz) · [Previous portfolio](https://v1.harish2k01.xyz)
+
 ## Run locally
 
 Requires Node.js 24 (Node 22.12+ is supported) and npm.
@@ -21,13 +23,14 @@ npm run preview   # preview the production build
 ## What's included
 
 - A responsive homepage with portrait, subtle orbital motion, featured projects, professional timeline, education, prominent grouped technical skills, the latest three RSS articles and blog platform links, and contact links.
-- Four project detail pages and an archive preserving all seven projects from the original portfolio, plus four additional public projects.
-- A plain-language homelab overview explaining applications, deployments, and monitoring.
+- Four infrastructure project detail pages and an archive of self-hosted applications and earlier work.
+- A homelab overview covering Run, Deploy, Observe, and Experiment.
+- An animated DeLorean linking to the previous portfolio.
 - Subtle one-time scroll reveals, hover feedback, mobile navigation, skip link, focus indicators, reduced-motion support, print styles, and clipboard feedback with a manual-copy fallback.
 - Canonical metadata, sitemap, robots.txt, custom favicon, and a real 404 document.
 - Docker, NGINX, Compose, PR-label semantic releases, and content-aware GHCR refreshes.
 
-There are no API credentials, live status counters, third-party font calls, contact-form backend, or Sites hosting dependencies. The shared layout loads a deferred Umami tracker from `umami.harish2k01.xyz`, limited to `harish2k01.xyz` so local previews do not record visits. This is the only external JavaScript; the local JavaScript budget excludes the separately loaded tracker.
+The site serves static HTML without a contact-form backend or client-side framework. Fonts are bundled locally. The shared layout loads a deferred Umami tracker from `umami.harish2k01.xyz`, limited to `harish2k01.xyz` so local previews do not record visits. This is the only external JavaScript; the local JavaScript budget excludes the separately loaded tracker.
 
 ## Edit the content
 
@@ -39,7 +42,7 @@ There are no API credentials, live status counters, third-party font calls, cont
 | `scripts/blog.mjs`         | Build-time RSS fetch, normalization, and fallback            |
 | `src/assets/harish.jpg`    | Portrait, optimized by Astro                                 |
 | `src/pages/index.astro`    | Homepage structure and content                               |
-| `src/components/Lab.astro` | Open homelab workflow diagram                                |
+| `src/components/Lab.astro` | Homelab activities and overview                              |
 | `src/styles/global.css`    | Theme, layout, responsive styles, and micro-interactions     |
 
 Update career milestones, project descriptions, and social links in the data files above. Layout and styling are separate from the content.
@@ -86,15 +89,15 @@ The runtime uses unprivileged NGINX on port 8080. `/healthz` is available for he
 
 ## GitHub Actions and Kubernetes
 
-Open a PR with exactly one of `major`, `minor`, or `patch`. After merging to `main`, the workflow creates the next Git tag and GitHub release, then publishes a multi-platform image to `ghcr.io/harish2k01/portfolio-next`. The first `minor` PR starts at `v0.1.0`.
+PRs carry exactly one of `major`, `minor`, or `patch`. After merging to `main`, the workflow creates the next Git tag and GitHub release, then publishes a multi-platform image to `ghcr.io/harish2k01/portfolio-next`.
 
 A daily run at 06:47 IST compares the latest three articles with the image for the latest release. Unchanged content skips the site/container build and every registry write. Changed content rebuilds that release's exact commit and updates its version alias; it does not create another Git release or tag. Feed failures leave the existing image intact.
 
-See [RELEASING.md](RELEASING.md) for image tags, immutability, retry behavior, merge checks, rollback, and the first-PR acceptance test.
+See [RELEASING.md](RELEASING.md) for image tags, content refreshes, retry behavior, and rollback.
 
 The reusable `portfolio-next` Helm chart lives in [helm-charts](https://github.com/harish2k01/helm-charts/tree/main/charts/portfolio-next). Argo CD configuration and environment values live in [homelab-ops](https://github.com/harish2k01/homelab-ops). Publishing the latest release updates the deployment's image tag and digest through the existing reusable version-update workflow. Changed digests roll out new pods; unchanged images and values produce no rollout.
 
-All jobs use the dedicated `portfolio-next-runner` ARC scale set. RSS is fetched directly from the in-cluster Ghost service to avoid the HTTP 403 seen on the GitHub-hosted runner. See [DEPLOYMENT.md](DEPLOYMENT.md) for runner setup, secrets, the `harish2k01.xyz` / `v1.harish2k01.xyz` cutover, and verification.
+The repository's workflows use a dedicated ARC runner and fetch RSS directly from the in-cluster Ghost service. These workflows are configured for this portfolio's infrastructure; a fork needs its own runner, feed access, registry, and deployment configuration. Local Astro and Docker builds can run independently. See [DEPLOYMENT.md](DEPLOYMENT.md) for the hosting architecture and workflow configuration.
 
 ## Verification
 
@@ -104,6 +107,6 @@ CI additionally builds and runs the actual production container. Browser review 
 
 ## Rights
 
-No open-source license has been assigned. The portrait and personal writing remain the owner's content. Bundled font packages retain their own license notices in their package distributions.
+No open-source license has been assigned. The portrait and personal writing remain the owner's content. Bundled font packages retain their own license notices in their package distributions. Model credits and licensing for the DeLorean are documented in [THIRD_PARTY_ASSETS.md](THIRD_PARTY_ASSETS.md).
 
 The npm manifest has `private: true` to prevent accidental npm publication; it does not control GitHub repository visibility.
