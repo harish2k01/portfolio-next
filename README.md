@@ -91,7 +91,7 @@ The runtime uses unprivileged NGINX on port 8080. `/healthz` is available for he
 
 PRs carry exactly one of `major`, `minor`, or `patch`. After merging to `main`, the workflow creates the next Git tag and GitHub release, then publishes a multi-platform image to `ghcr.io/harish2k01/portfolio-next`.
 
-A daily run at 06:47 IST compares the latest three articles with the image for the latest release. Unchanged content skips the site/container build and every registry write. Changed content rebuilds that release's exact commit and updates its version alias; it does not create another Git release or tag. Feed failures leave the existing image intact.
+A daily workflow scheduled for midnight UTC (05:30 IST) checks the latest three articles against the latest stable release's published image. GitHub may delay the actual start. If content is unchanged and publication is complete, it skips rebuilding and registry writes. Changed content builds from the same release commit—or reuses an existing matching image—and updates the version alias without creating a Git tag or release for the article update. Feed failures preserve the existing image. The workflow also retries incomplete publications and processes pending code releases.
 
 See [RELEASING.md](RELEASING.md) for image tags, content refreshes, retry behavior, and rollback.
 

@@ -16,7 +16,7 @@ All release/refresh runs share one concurrency group and do not cancel active pu
 
 ## Daily refresh
 
-Scheduled at `17 1 * * *` UTC (06:47 IST). GitHub may delay schedules. The manual `Release and refresh` dispatch on `main` uses the same idempotent logic and is also the retry mechanism.
+Scheduled daily at midnight UTC (`0 0 * * *`, 05:30 IST). GitHub may delay execution; this is the configured trigger time, not a guaranteed start time. The manual `Release and refresh` dispatch on `main` uses the same idempotent logic and is also the retry mechanism.
 
 Only the newest stable release gets routine feed refreshes. A release whose initial image publication failed is also retried until its image metadata asset exists. If an unreleased merge is waiting because a previous run failed or was superseded, it is reconciled before refresh.
 
