@@ -3,7 +3,7 @@ export const profile = {
   shortName: "Harish",
   role: "Site Reliability Engineer",
   company: "NielsenIQ",
-  email: "me@harish2k01.in",
+  email: "harish2k01@icloud.com",
   github: "https://github.com/harish2k01",
   linkedin: "https://www.linkedin.com/in/harish2k01/",
   blog: "https://harish2k01.in/",

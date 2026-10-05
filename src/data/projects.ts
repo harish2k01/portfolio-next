@@ -114,12 +114,12 @@ export const otherProjects = [
     repo: "https://github.com/harish2k01/papervault",
   },
   {
-    name: "IRCTC Travel Planner",
+    name: "RailWatch",
     category: "Self-hosted applications",
     description:
-      "A calendar-first railway travel planner with booking windows, reminders, and PNR tracking. Independent of IRCTC.",
-    tags: ["Next.js", "PostgreSQL", "Docker"],
-    repo: "https://github.com/harish2k01/irctc-travel-planner",
+      "A self-hosted train travel planner for recurring journeys, with calendar and Kanban views, booking reminders, and a private ticket vault with local PDF, QR, and OCR extraction.",
+    tags: ["Next.js", "Fastify", "PostgreSQL", "Docker"],
+    repo: "https://github.com/harish2k01/railwatch",
   },
   {
     name: "Net Worth Tracker",
