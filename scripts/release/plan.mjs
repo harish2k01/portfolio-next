@@ -8,6 +8,15 @@ const git = (...args) => execFileSync("git", args, { encoding: "utf8" }).trim();
 const releases = (await allPages("releases")).filter(
   (r) => !r.draft && !r.prerelease && VERSION.test(r.tag_name),
 );
+// A release can be published after checkout fetched its refs. Refresh the
+// default branch and every release tag returned by the API before resolving
+// them locally. Do not force tag updates: conflicting tags must fail closed.
+git(
+  "fetch",
+  "origin",
+  "+refs/heads/main:refs/remotes/origin/main",
+  ...releases.map((r) => `refs/tags/${r.tag_name}:refs/tags/${r.tag_name}`),
+);
 releases.sort((a, b) => compareVersions(a.tag_name, b.tag_name));
 const latest = releases.at(-1);
 const head = git("rev-parse", "origin/main");
