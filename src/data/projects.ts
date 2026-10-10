@@ -98,6 +98,14 @@ export const projects: Project[] = [
 
 export const otherProjects = [
   {
+    name: "Tech Bytes Playground",
+    category: "Self-hosted applications",
+    description:
+      "An original, colorful Ghost theme for my technology blog, with light and dark modes, article contents, reading progress, and focus mode. It integrates native Ghost search, membership, and comments, with installable ZIPs published through automated semantic releases.",
+    tags: ["Ghost", "Handlebars", "JavaScript", "CSS", "GitHub Actions"],
+    repo: "https://github.com/harish2k01/tech-bytes-playground",
+  },
+  {
     name: "Portfolio Next",
     category: "Self-hosted applications",
     description:
