@@ -19,6 +19,9 @@ on:
 permissions:
   contents: write
   packages: write
+defaults:
+  run:
+    shell: bash
 jobs:
   publish:
     runs-on: portfolio-next-runner
@@ -35,6 +38,10 @@ jobs:
           ref: ${{ inputs.sha }}
           fetch-depth: 0
           persist-credentials: false
+      - name: Install workflow tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ca-certificates curl git gh jq unzip python3 build-essential
       - name: Verify immutable release identity
         shell: bash
         run: |
