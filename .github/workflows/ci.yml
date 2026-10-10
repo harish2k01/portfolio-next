@@ -10,10 +10,13 @@ permissions:
 concurrency:
   group: validate-${{ github.ref }}
   cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
 jobs:
   release-label:
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: portfolio-next-runner
+    if: github.event_name == 'pull_request'
+    runs-on: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-latest' || 'portfolio-next-runner' }}
     steps:
       - uses: actions/github-script@v7
         with:
@@ -22,11 +25,16 @@ jobs:
             const selected = labels.filter(label => ['major', 'minor', 'patch'].includes(label));
             if (selected.length !== 1) core.setFailed('Add exactly one release label: major, minor, or patch.');
   validate:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: portfolio-next-runner
+    runs-on: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-latest' || 'portfolio-next-runner' }}
+    container: node:24-bookworm
     env:
       BLOG_MODE: snapshot
     steps:
+      - name: Install workflow tools
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates curl git gh jq unzip python3 build-essential docker.io
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -50,7 +58,7 @@ jobs:
         run: docker build -t portfolio:test .
       - name: Verify production routing
         run: |
-          docker run -d --name portfolio-test -p 8080:8080 --user 101:101 --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m --cap-drop ALL --security-opt no-new-privileges portfolio:test
+          docker run -d --name portfolio-test --network "container:$HOSTNAME" --user 101:101 --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m --cap-drop ALL --security-opt no-new-privileges portfolio:test
           for attempt in $(seq 1 20); do
             if curl -fsS http://localhost:8080/healthz; then break; fi
             sleep 1
