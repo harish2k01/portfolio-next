@@ -21,23 +21,21 @@ jobs:
   release:
     if: github.ref == 'refs/heads/main' || github.event_name == 'release'
     runs-on: portfolio-next-runner
-    container: node:24-bookworm
     permissions:
       contents: write
       pull-requests: read
     outputs:
       targets: ${{ steps.plan.outputs.targets }}
     steps:
-      - name: Install workflow tools
-        run: |
-          apt-get update
-          apt-get install -y --no-install-recommends ca-certificates curl git gh jq unzip python3 build-essential
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
           persist-credentials: false
+      - name: Install workflow tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ca-certificates curl git gh jq unzip python3 build-essential
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
@@ -67,20 +65,18 @@ jobs:
     if: needs.release.outputs.targets != '[]'
     # Trusted main only. Fetch public RSS directly from Ghost, without edge filtering.
     runs-on: portfolio-next-runner
-    container: node:24-bookworm
     timeout-minutes: 10
     permissions:
       contents: read
     steps:
-      - name: Install workflow tools
-        run: |
-          apt-get update
-          apt-get install -y --no-install-recommends ca-certificates curl git gh jq unzip python3 build-essential
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: actions/checkout@v4
         with:
           ref: main
           persist-credentials: false
+      - name: Install workflow tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ca-certificates curl git gh jq unzip python3 build-essential
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
