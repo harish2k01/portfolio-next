@@ -22,6 +22,14 @@ permissions:
 defaults:
   run:
     shell: bash
+env:
+  # Homelab runners pull Docker Hub images through zot and npm packages through Verdaccio.
+  BUILDKIT_MIRROR_CONFIG: |
+    [registry."docker.io"]
+      mirrors = ["zot.zot.svc.cluster.local:5000"]
+    [registry."zot.zot.svc.cluster.local:5000"]
+      http = true
+  HOMELAB_NPM_REGISTRY: http://verdaccio.verdaccio.svc.cluster.local:4873/
 jobs:
   publish:
     runs-on: portfolio-next-runner
@@ -70,6 +78,9 @@ jobs:
           grep -Fxq 'FROM --platform=$BUILDPLATFORM node:24-alpine AS build' "$RUNNER_TEMP/portfolio-native.Dockerfile"
       - uses: docker/setup-buildx-action@v3
         if: steps.plan.outputs.action != 'skip'
+        with:
+          driver-opts: network=host
+          buildkitd-config-inline: ${{ runner.environment == 'self-hosted' && env.BUILDKIT_MIRROR_CONFIG || '' }}
       - uses: docker/login-action@v3
         if: steps.plan.outputs.action != 'skip'
         with:
@@ -79,7 +90,7 @@ jobs:
       - name: Build and validate production container
         if: steps.plan.outputs.action == 'build'
         run: |
-          docker build --file "$RUNNER_TEMP/portfolio-native.Dockerfile" -t portfolio:test .
+          docker build --build-arg "NPM_CONFIG_REGISTRY=${{ runner.environment == 'self-hosted' && env.HOMELAB_NPM_REGISTRY || 'https://registry.npmjs.org/' }}" --file "$RUNNER_TEMP/portfolio-native.Dockerfile" -t portfolio:test .
           docker run -d --name portfolio-test -p 8080:8080 --user 101:101 --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m --cap-drop ALL --security-opt no-new-privileges portfolio:test
           for attempt in $(seq 1 20); do
             if curl -fsS http://localhost:8080/healthz; then break; fi
@@ -110,6 +121,8 @@ jobs:
           cache-to: type=gha,mode=max,scope=portfolio
           provenance: true
           sbom: true
+          build-args: |
+            NPM_CONFIG_REGISTRY=${{ runner.environment == 'self-hosted' && env.HOMELAB_NPM_REGISTRY || 'https://registry.npmjs.org/' }}
       - name: Verify image and prepare release metadata
         id: metadata
         run: node scripts/release/metadata.mjs
