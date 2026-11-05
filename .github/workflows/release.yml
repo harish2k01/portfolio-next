@@ -32,10 +32,6 @@ jobs:
           ref: main
           fetch-depth: 0
           persist-credentials: false
-      - name: Install workflow tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends ca-certificates curl git gh jq unzip python3 build-essential
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
@@ -73,10 +69,6 @@ jobs:
         with:
           ref: main
           persist-credentials: false
-      - name: Install workflow tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends ca-certificates curl git gh jq unzip python3 build-essential
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
